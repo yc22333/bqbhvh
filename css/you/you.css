@@ -1,0 +1,547 @@
+/* ============================================================
+   you.css — 右侧边栏 · 音乐播放器 UI
+   功能: 纯透明无边背景, 底部固定控制区, 多层声纹可视化
+   [CREATED: 2026-06-07]
+   ============================================================ */
+
+/* ── 右侧边栏容器 ── */
+body > #you-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  z-index: 999999 !important;
+  background: transparent;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  /* ── 设计说明：右侧栏无背景/无边框/无阴影 ──
+     这是故意设计的视觉效果，让右侧栏呈"悬浮透明"状态，
+     与左侧栏的实体浮雕风格形成对比。左侧有阴影，右侧无阴影。
+     请不要在此添加 box-shadow 或 border。 */
+  transition: width 0.5s cubic-bezier(0, 0, 0.2, 1), transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ── 折叠状态 (滑出屏幕右侧) ── */
+#you-panel.you-su {
+  transform: translateX(100%);
+}
+
+/* ── 折叠时主内容区 margin-right 归零 ──
+     当右侧边栏隐藏（滑出屏幕）时，主内容区不再保留右侧边栏的宽度空间。
+     利用 ~ 兄弟选择器实现。 */
+#you-panel.you-su ~ #main-content {
+  margin-right: 0;
+}
+
+/* ── 底部面板模式：永远不占用主内容区右侧边距 ──
+     底部栏是覆盖在内容上方，不是与内容并排，
+     所以无论展开还是收起，主内容区都不应有 margin-right。
+     右菜单栏与下菜单栏是两个独立分区，永不联动。 */
+#you-panel.you-bottom ~ #main-content {
+  margin-right: 0;
+}
+
+/* ── 浮动展开按钮 ── */
+body > .you-expand-btn {
+  position: fixed !important;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999 !important;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(245, 184, 46, 0.3);
+  border-radius: 50%;
+  background: rgba(20, 40, 55, 0.9);
+  color: #f5b82e;
+  font-size: 22px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.4s cubic-bezier(0, 0, 0.2, 1),
+    opacity 0.35s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    left 0.15s ease,
+    top 0.15s ease;
+  line-height: 1;
+  padding: 0;
+  /* 默认隐藏：向下偏移 + 透明 */
+  transform: translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+  /* 防止浏览器拦截触摸事件，方便拖拽 */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body > .you-expand-btn:hover {
+  background: rgba(245, 184, 46, 0.2);
+  border-color: rgba(245, 184, 46, 0.5);
+}
+
+/* 显示状态：向上淡入 */
+body > .you-expand-btn--show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── 拖拽中 ── */
+body > .you-expand-btn--dragging {
+  cursor: grabbing !important;
+  transition: none !important;            /* 拖拽时禁止任何过渡，手指跟手 */
+  transform: translateY(0) scale(1.12);   /* 略微放大，视觉反馈 */
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6);
+}
+
+/* ── 互斥锁：右侧栏可见时，按钮强制隐藏 ──
+     利用 ~ 兄弟选择器，只要面板没有 you-su（即展开状态），
+     按钮不论 --show 与否都强制透明，形成安全兜底。 */
+#you-panel:not(.you-su) ~ .you-expand-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 内部所有可交互元素恢复鼠标事件 */
+#you-panel * {
+  pointer-events: auto;
+}
+
+/* ── 播放器整体容器 ── */
+.you-player {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+/* ── 头像球独立容器 (5个球从顶到底均匀分布) ── */
+.you-avatars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  z-index: 2;
+}
+
+/* 组合容器 — 内部居中，贴底 */
+.you-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* =================================================================
+   ① 圆形头像球
+   ================================================================= */
+
+/* 单个头像球 — 浮雕圆形 + 独立交互 */
+.you-avatar {
+  width: clamp(60px, 12vh, 90px);
+  height: clamp(60px, 12vh, 90px);
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+  cursor: pointer;
+  /* 3D 立体阴影 — 球面浮雕 */
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.06),
+    0 6px 16px rgba(0, 0, 0, 0.16),
+    0 2px 4px rgba(0, 0, 0, 0.10),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.30),
+    inset 0 2px 4px rgba(255, 255, 255, 0.10);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.you-avatar:hover {
+  transform: scale(1.06);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.06),
+    0 8px 22px rgba(0, 0, 0, 0.22),
+    0 2px 4px rgba(0, 0, 0, 0.10),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.30),
+    inset 0 2px 4px rgba(255, 255, 255, 0.10);
+}
+
+/* ── 柱状声纹 (覆盖整个播放器背景，不拦截点击) ── */
+/* =================================================================
+   ② 歌曲 ID
+   ================================================================= */
+.you-song-id {
+  text-align: center;
+  padding: 10px 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: clamp(100px, min(76cqi, 20vh), 190px);
+  margin: 0 auto;
+  font-size: clamp(13px, 3vh, 18px);
+  color: rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: clamp(0.5px, 0.2vh, 2px);
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+/* =================================================================
+   ③ 柱状图声纹 (CSS 动画脉冲)
+   ================================================================= */
+.you-barchart {
+  height: clamp(36px, 7vh, 56px);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(2px, 0.4vh, 4px);
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.you-bchart-bar {
+  width: clamp(3px, 0.5vh, 5px);
+  background: linear-gradient(to top, rgba(91, 192, 222, 0.25), rgba(245, 184, 46, 0.35));
+  border-radius: 2px 2px 0 0;
+  animation: bchartPulse 1.0s ease-in-out infinite;
+}
+
+@keyframes bchartPulse {
+  0%, 100% { transform: scaleY(0.6); opacity: 0.5; }
+  50%      { transform: scaleY(1.0); opacity: 1;   }
+}
+
+/* =================================================================
+   ⑤ 底部 — 播放控制按钮
+   ================================================================= */
+.you-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vh, 28px);
+  padding: 6px 0 4px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.you-btn {
+  width: clamp(32px, 6vh, 46px);
+  height: clamp(32px, 6vh, 46px);
+  border-radius: 50%;
+  border: 1px solid rgba(245, 184, 46, 0.15);
+  background: rgba(245, 184, 46, 0.06);
+  color: rgba(245, 184, 46, 0.55);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 2.5vh, 18px);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.you-btn:hover {
+  color: #f5b82e;
+  border-color: rgba(245, 184, 46, 0.3);
+  background: rgba(245, 184, 46, 0.08);
+  box-shadow: 0 0 10px rgba(245, 184, 46, 0.15);
+}
+
+/* 播放/暂停按钮稍大 */
+.you-btn-play {
+  width: clamp(38px, 7vh, 54px);
+  height: clamp(38px, 7vh, 54px);
+  font-size: clamp(16px, 3vh, 22px);
+}
+
+/* 左右切换按钮 — 去框架，只留图标 */
+.you-btn-prev,
+.you-btn-next {
+  border: none;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+  font-size: clamp(16px, 3vh, 22px);
+  color: rgba(245, 184, 46, 0.45);
+}
+
+.you-btn-prev:hover,
+.you-btn-next:hover {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  color: #f5b82e;
+}
+
+/* ---- 补: 状态类 (JS 控制) ---- */
+.you-btn.playing {
+  color: #f5b82e;
+  border-color: rgba(245, 184, 46, 0.3);
+  background: rgba(245, 184, 46, 0.08);
+  font-size: 0;
+  position: relative;
+}
+
+/* 暂停竖条 — 两个黄色矩形 */
+.you-btn.playing::before,
+.you-btn.playing::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: clamp(3px, 2cqi, 5px);
+  height: clamp(11px, 8cqi, 18px);
+  background: #f5b82e;
+  border-radius: 1px;
+  transform: translateY(-50%);
+}
+
+.you-btn.playing::before {
+  left: calc(50% - clamp(5px, 3.5cqi, 7px));
+}
+
+.you-btn.playing::after {
+  left: calc(50% + clamp(1px, 1.5cqi, 3px));
+}
+
+/* =================================================================
+   底部面板模式 — 窄屏/移动端：从底部向上展开，内容转为横向
+   ================================================================= */
+
+/* ── 底部面板容器 ── */
+#you-panel.you-bottom {
+  top: auto;
+  bottom: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  width: auto;
+  height: auto;
+  min-height: 72px;
+  background: linear-gradient(
+    175deg,
+    rgba(20, 40, 55, 0.92) 0%,
+    rgba(12, 26, 38, 0.95) 50%,
+    rgba(8, 18, 28, 0.98) 100%
+  );
+  box-shadow:
+    0 -4px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: 16px 16px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1), left 0.5s cubic-bezier(0, 0, 0.2, 1);
+  padding: 10px 14px 12px;
+  backdrop-filter: blur(12px);
+}
+
+/* 隐藏状态（滑出底部） */
+#you-panel.you-bottom.you-su {
+  transform: translateY(100%);
+}
+
+/* 显示状态（从底部滑入） */
+#you-panel.you-bottom:not(.you-su) {
+  transform: translateY(0);
+}
+
+/* ── 左侧边栏折叠（60px）时，面板左边缘贴紧 ── */
+#zuo-panel.zuo-su ~ #you-panel.you-bottom {
+  left: 60px;
+}
+
+/* ── 左侧边栏隐藏（移出屏幕）时，面板回到屏幕左边缘 ── */
+#zuo-panel.zuo-hidden ~ #you-panel.you-bottom {
+  left: 0;
+}
+
+/* ── 播放器容器变为横向行 ── */
+#you-panel.you-bottom .you-player {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+/* ── 头像球：水平排列，只显示前3个避免拥挤 ── */
+#you-panel.you-bottom .you-avatars {
+  flex-direction: row;
+  flex: none;
+  gap: 3px;
+  padding-top: 0;
+  justify-content: flex-start;
+}
+
+#you-panel.you-bottom .you-avatars .you-avatar:nth-child(n+4) {
+  display: none;
+}
+
+/* ── 头像球缩小 ── */
+#you-panel.you-bottom .you-avatar {
+  width: clamp(28px, 6vw, 36px);
+  height: clamp(28px, 6vw, 36px);
+}
+
+/* ── 组合区：控制按钮居中 + 声纹靠右 ── */
+#you-panel.you-bottom .you-group {
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-start;
+  min-width: 0;
+  position: relative;
+}
+
+/* ── 控制按钮：在组合区绝对居中 ── */
+#you-panel.you-bottom .you-controls {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+/* ── 声纹柱：靠右对齐 ── */
+#you-panel.you-bottom .you-barchart {
+  position: static;
+  transform: none;
+  left: auto;
+  bottom: auto;
+  height: clamp(28px, 6vw, 40px);
+  gap: clamp(3px, 0.6vw, 6px);
+  flex: 0 0 auto;
+  width: clamp(80px, 22vw, 140px);
+  margin-left: auto;
+}
+
+#you-panel.you-bottom .you-bchart-bar {
+  width: clamp(3px, 0.6vw, 5px);
+}
+
+/* ── 底部面板隐藏电台文字 ── */
+#you-panel.you-bottom .you-song-id {
+  display: none;
+}
+
+/* ── 控制按钮缩小 ── */
+#you-panel.you-bottom .you-btn {
+  width: clamp(22px, 5vw, 28px);
+  height: clamp(22px, 5vw, 28px);
+  font-size: clamp(10px, 2.5vw, 12px);
+}
+
+#you-panel.you-bottom .you-btn-play {
+  width: clamp(26px, 6vw, 32px);
+  height: clamp(26px, 6vw, 32px);
+  font-size: clamp(11px, 3vw, 14px);
+}
+
+#you-panel.you-bottom .you-btn-prev,
+#you-panel.you-bottom .you-btn-next {
+  font-size: clamp(11px, 3vw, 14px);
+}
+
+/* 暂停竖条适配缩小 */
+#you-panel.you-bottom .you-btn.playing::before,
+  #you-panel.you-bottom .you-btn.playing::after {
+    height: 12px;
+    width: 2px;
+  }
+
+  #you-panel.you-bottom .you-btn.playing::before {
+    left: calc(50% - 5px);
+  }
+
+  #you-panel.you-bottom .you-btn.playing::after {
+    left: calc(50% + 1px);
+  }
+
+  /* ── 底部面板收起按钮 (半圆形凸起把手，镶在面板上边框外) ── */
+  .you-hide-btn {
+    display: none;  /* 右侧栏模式隐藏 */
+  }
+
+  #you-panel.you-bottom .you-hide-btn {
+    display: flex;
+    position: absolute;
+    top: -18px;                        /* 凸出在面板上边框之外 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 20px;                      /* 半圆高度 */
+    z-index: 5;
+    border: 1px solid rgba(245, 184, 46, 0.25);
+    border-bottom: none;               /* 底部无边框，与面板无缝衔接 */
+    border-radius: 50% 50% 0 0;       /* 上半圆、下半直边 */
+    background: linear-gradient(
+      175deg,
+      rgba(20, 44, 60, 0.95) 0%,
+      rgba(12, 30, 45, 0.98) 100%
+    );
+    box-shadow:
+      0 -2px 8px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    color: rgba(245, 184, 46, 0.5);
+    font-size: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition:
+      color 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background 0.25s ease;
+    line-height: 1;
+    padding: 2px 0 0;                  /* 图标微微下移居中 */
+  backdrop-filter: blur(4px);
+}
+
+#you-panel.you-bottom .you-hide-btn:hover {
+  color: #f5b82e;
+  border-color: rgba(245, 184, 46, 0.45);
+  background: linear-gradient(
+    175deg,
+    rgba(30, 50, 65, 0.95) 0%,
+    rgba(16, 36, 52, 0.98) 100%
+  );
+  box-shadow:
+    0 -2px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 10px rgba(245, 184, 46, 0.12);
+}
+
+/* 面板收起时，把手也隐藏 */
+#you-panel.you-bottom.you-su .you-hide-btn {
+  display: none;
+}
+
+/* ── 禁用过渡 — 用于模式切换时避免视觉跳跃 ── */
+.you-no-transition,
+.you-no-transition * {
+  transition: none !important;
+}

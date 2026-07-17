@@ -1,0 +1,541 @@
+/* ============================================================
+   riye.css — 白昼/极夜 双模式切换
+   功能：html[data-theme="night"] 时覆盖全站颜色为紫黑+金色
+   ============================================================ */
+
+/* ── 日/夜切换过渡动画 ── */
+html,
+html *,
+html *::before,
+html *::after {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   极夜模式 — 紫黑色调 + 黑金
+   全局颜色映射规则：
+     原本蓝色 (#5BC0DE) → 薰衣草紫 #A78BFA
+     原本绿色 (#4ade80) → 暖金 #D4A060
+     原本亮黄 (#F5D742) → 深金 #E8B830
+     原本粉色 (#FF6B9D) → 紫粉 #C084FC
+     原本红色/橙色 → 酒红/暗金
+   ════════════════════════════════════════════════════════════ */
+html[data-theme="night"] {
+  --nb-bg: #0A0015;
+  --nb-bg-surface: rgba(10, 0, 21, 0.50);    /* 主要界面半透明 */
+  --nb-surface: #0D0020;
+  --nb-card: #1A0A35;
+  --nb-card-bg: rgba(26, 10, 53, 0.35);       /* 卡片半透明 */
+  --nb-card-hover: #26104A;
+  --nb-border: rgba(167, 139, 250, 0.15);
+  --nb-gold: #D4A060;
+  --nb-gold-bright: #E8B830;
+  --nb-gold-dim: rgba(212, 160, 96, 0.55);
+  --nb-lavender: #A78BFA;
+  --nb-lavender-dim: rgba(167, 139, 250, 0.35);
+  --nb-text: #D5C8E8;
+  --nb-text-dim: rgba(213, 200, 232, 0.5);
+  --nb-text-muted: rgba(213, 200, 232, 0.3);
+}
+
+/* ── Body ── */
+html[data-theme="night"] body {
+  background: var(--nb-bg) !important;
+}
+
+/* ═══ 全局文字颜色覆盖 ═══ */
+/* 所有原始蓝色 → 薰衣草紫 */
+html[data-theme="night"] * {
+  --tw-text-opacity: 1;
+}
+
+/* 广度优先：覆盖所有显式蓝色文字 */
+html[data-theme="night"] [style*="color:#5bc0de"],
+html[data-theme="night"] [style*="color:#5BC0DE"],
+html[data-theme="night"] [style*="color:#4ade80"],
+html[data-theme="night"] [style*="color:rgba(91,192,222"],
+html[data-theme="night"] [style*="color: rgba(91,192,222"],
+html[data-theme="night"] [style*="color:rgba(74,222,128"],
+html[data-theme="night"] [style*="color: rgba(74,222,128"] {
+  color: var(--nb-lavender) !important;
+}
+
+/* ═══ 左侧边栏 ═══ */
+html[data-theme="night"] #zuo-panel {
+  background: linear-gradient(180deg,
+    rgba(13, 0, 32, 0.50) 0%,
+    rgba(21, 8, 48, 0.50) 100%) !important;
+  border-right-color: var(--nb-border) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-header {
+  border-bottom-color: var(--nb-border) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-title {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-star-collapsed polygon {
+  fill: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-item {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-item:hover,
+html[data-theme="night"] #zuo-panel .zuo-item.active {
+  background: rgba(167, 139, 250, 0.12) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] #zuo-panel .zuo-item.active {
+  border-left-color: var(--nb-lavender) !important;
+}
+html[data-theme="night"] .zuo-toggle {
+  color: var(--nb-gold-dim) !important;
+  background: rgba(167, 139, 250, 0.08) !important;
+  border-color: var(--nb-border) !important;
+}
+
+/* ═══ 汉堡按钮 ═══ */
+html[data-theme="night"] body > .zuo-hamburger {
+  background: rgba(10, 0, 21, 0.55) !important;
+  border-color: rgba(167, 139, 250, 0.2) !important;
+}
+html[data-theme="night"] body > .zuo-hamburger span {
+  background: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] body > .zuo-hamburger:hover {
+  background: rgba(167, 139, 250, 0.15) !important;
+}
+
+/* ═══ 下拉菜单 ═══ */
+html[data-theme="night"] .zuo-dropdown {
+  background: linear-gradient(135deg,
+    rgba(10, 0, 21, 0.55),
+    rgba(21, 8, 48, 0.55)) !important;
+  border-bottom-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .zuo-dropdown-header {
+  border-bottom-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .zuo-dropdown-title {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .zuo-dropdown-nav .zuo-item {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .zuo-dropdown-nav .zuo-item:hover,
+html[data-theme="night"] .zuo-dropdown-nav .zuo-item.active {
+  background: rgba(167, 139, 250, 0.1) !important;
+  color: var(--nb-gold-bright) !important;
+}
+
+/* ═══ 右侧边栏 ═══ */
+html[data-theme="night"] #you-panel {
+  background: linear-gradient(180deg,
+    rgba(13, 0, 32, 0.50) 0%,
+    rgba(21, 8, 48, 0.50) 100%) !important;
+  border-left-color: var(--nb-border) !important;
+}
+html[data-theme="night"] #you-panel .you-player {
+  border-bottom-color: var(--nb-border) !important;
+}
+html[data-theme="night"] #you-panel .you-group {
+  background: rgba(167, 139, 250, 0.04) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] #you-panel .you-song-id {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .you-btn {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-gold-dim) !important;
+}
+html[data-theme="night"] .you-btn:hover {
+  background: rgba(167, 139, 250, 0.15) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .you-hide-btn {
+  background: rgba(167, 139, 250, 0.06) !important;
+  color: var(--nb-gold-dim) !important;
+  border-color: var(--nb-border) !important;
+}
+
+/* ═══ 主内容 & 首页 ═══ */
+html[data-theme="night"] #main-content {
+  background: var(--nb-bg-surface) !important;
+}
+html[data-theme="night"] .shouye-hero {
+  background: var(--nb-bg-surface) !important;
+}
+html[data-theme="night"] .shouye-title {
+  color: var(--nb-gold-bright) !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 30px rgba(167,139,250,0.25) !important;
+}
+html[data-theme="night"] .shouye-star {
+  color: var(--nb-lavender) !important;
+}
+
+/* ═══ 卡片系统 ═══ */
+html[data-theme="night"] .shouye-card {
+  background: linear-gradient(135deg,
+    rgba(26, 10, 53, 0.35),
+    rgba(13, 0, 32, 0.35)) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .shouye-card div {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .shouye-card .id-zyg {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .shouye-card .id-hmbb {
+  color: var(--nb-lavender) !important;
+}
+html[data-theme="night"] .shouye-card .id-pdx {
+  color: #C084FC !important;
+}
+html[data-theme="night"] .shouye-card.btn-card:hover {
+  background: rgba(167, 139, 250, 0.12) !important;
+  border-color: rgba(167, 139, 250, 0.25) !important;
+}
+
+/* ═══ 功能模块卡片 ═══ */
+html[data-theme="night"] .mima-card,
+html[data-theme="night"] .zhizao-card,
+html[data-theme="night"] .ditu-card,
+html[data-theme="night"] .guanyu-card {
+  background: linear-gradient(135deg,
+    rgba(26, 10, 53, 0.35),
+    rgba(13, 0, 32, 0.35)) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .mima-card-title,
+html[data-theme="night"] .zhizao-card-title,
+html[data-theme="night"] .ditu-card-title,
+html[data-theme="night"] .guanyu-card-title {
+  color: var(--nb-gold-bright) !important;
+  border-bottom-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .mima-card-text,
+html[data-theme="night"] .zhizao-card-text,
+html[data-theme="night"] .ditu-card-text,
+html[data-theme="night"] .guanyu-card-text,
+html[data-theme="night"] .guanyu-card-text * {
+  color: var(--nb-text) !important;
+}
+
+/* ═══ 开关/输入/按钮 ═══ */
+html[data-theme="night"] .mima-switch-btn.active {
+  background: rgba(167, 139, 250, 0.18) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .mima-switch-btn {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .mima-input,
+html[data-theme="night"] .zhizao-input,
+html[data-theme="night"] .admin-input,
+html[data-theme="night"] .awm-input,
+html[data-theme="night"] .hs-item-input {
+  background: rgba(10, 0, 21, 0.6) !important;
+  border-color: rgba(167, 139, 250, 0.15) !important;
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .mima-btn,
+html[data-theme="night"] .zhizao-btn {
+  background: rgba(167, 139, 250, 0.08) !important;
+  border-color: rgba(167, 139, 250, 0.2) !important;
+  color: var(--nb-gold-dim) !important;
+}
+html[data-theme="night"] .mima-btn:hover,
+html[data-theme="night"] .zhizao-btn:hover {
+  background: rgba(167, 139, 250, 0.18) !important;
+  color: var(--nb-gold-bright) !important;
+}
+
+/* ═══ 轮播 ═══ */
+html[data-theme="night"] .lunbo-item {
+  color: var(--nb-text-dim) !important;
+}
+
+/* ═══ 子页 ═══ */
+html[data-theme="night"] .zuo-page-container {
+  background: var(--nb-bg-surface) !important;
+}
+html[data-theme="night"] .zuo-page-title {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .zuo-page-back {
+  color: var(--nb-gold-dim) !important;
+  border-top-color: var(--nb-border) !important;
+}
+
+/* ═══ 表格 ═══ */
+html[data-theme="night"] .admin-table {
+  background: transparent !important;
+}
+html[data-theme="night"] .admin-table th {
+  background: rgba(167, 139, 250, 0.08) !important;
+  color: var(--nb-gold-bright) !important;
+  border-bottom-color: rgba(167, 139, 250, 0.12) !important;
+}
+html[data-theme="night"] .admin-table td {
+  border-bottom-color: rgba(167, 139, 250, 0.06) !important;
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .admin-table tr:hover td {
+  background: rgba(167, 139, 250, 0.04) !important;
+}
+
+/* ═══ 管理面板 ═══ */
+html[data-theme="night"] .admin-panel {
+  background: rgba(13, 0, 32, 0.6) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .admin-panel-title {
+  color: var(--nb-lavender) !important;
+}
+html[data-theme="night"] .admin-submit-btn {
+  background: rgba(167, 139, 250, 0.1) !important;
+  border-color: rgba(167, 139, 250, 0.25) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .admin-submit-btn:hover {
+  background: rgba(167, 139, 250, 0.2) !important;
+}
+html[data-theme="night"] .admin-toggle-btn {
+  color: var(--nb-lavender) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .admin-status {
+  color: var(--nb-gold-dim) !important;
+}
+
+/* ═══ 子页面：AWM / 回收 / 卡战备 / 护航 / 买物资+找锁车 / 陪玩 / 下单跑刀 ═══ */
+html[data-theme="night"] .awm-container,
+html[data-theme="night"] .hs-container,
+html[data-theme="night"] .shushukazhanbei-container,
+html[data-theme="night"] .huhang-container,
+html[data-theme="night"] .maihong-container,
+html[data-theme="night"] .peiwan-container,
+html[data-theme="night"] .paodao-hero {
+  background: var(--nb-bg-surface) !important;
+}
+html[data-theme="night"] .awm-card,
+html[data-theme="night"] .hs-card,
+html[data-theme="night"] .shushukazhanbei-card,
+html[data-theme="night"] .huhang-card,
+html[data-theme="night"] .maihong-card,
+html[data-theme="night"] .peiwan-card {
+  background: linear-gradient(135deg,
+    rgba(26, 10, 53, 0.35),
+    rgba(13, 0, 32, 0.35)) !important;
+  border-color: var(--nb-border) !important;
+}
+
+/* AWM 选项卡 & 标签 */
+html[data-theme="night"] .awm-tab {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .awm-tab.active {
+  background: rgba(167, 139, 250, 0.15) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .awm-input-label,
+html[data-theme="night"] .awm-amount-label {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .awm-amount-value {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .awm-btn-buy,
+html[data-theme="night"] .awm-btn-sell {
+  background: rgba(167, 139, 250, 0.08) !important;
+  border-color: rgba(167, 139, 250, 0.2) !important;
+  color: var(--nb-gold-dim) !important;
+}
+html[data-theme="night"] .awm-btn-buy:hover,
+html[data-theme="night"] .awm-btn-sell:hover {
+  background: rgba(167, 139, 250, 0.18) !important;
+  color: var(--nb-gold-bright) !important;
+}
+
+/* 回收 */
+html[data-theme="night"] .hs-switch-btn {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .hs-switch-btn.active {
+  background: rgba(167, 139, 250, 0.18) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .hs-item-name {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .hs-item-unit {
+  color: var(--nb-text-muted) !important;
+}
+html[data-theme="night"] .hs-item-hint {
+  color: var(--nb-text-muted) !important;
+}
+html[data-theme="night"] .hs-result-label {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .hs-result-value {
+  color: var(--nb-gold-bright) !important;
+}
+
+/* 卡战备 */
+html[data-theme="night"] .shushukazhanbei-panel {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .shushukazhanbei-panel.active {
+  background: rgba(167, 139, 250, 0.15) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .shushukazhanbei-stat-label {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .shushukazhanbei-stat-value {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .shushukazhanbei-equipment-item {
+  background: rgba(167, 139, 250, 0.04) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .shushukazhanbei-equipment-name {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .shushukazhanbei-equipment-value {
+  color: var(--nb-lavender) !important;
+}
+
+/* 下单跑刀 */
+html[data-theme="night"] .pd-tab {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .pd-tab.active {
+  background: rgba(167, 139, 250, 0.15) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .pd-tab-sub {
+  color: var(--nb-text-muted) !important;
+}
+html[data-theme="night"] .pd-label {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .pd-money {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .pd-total-text {
+  color: var(--nb-text) !important;
+}
+
+/* 游戏区域 */
+html[data-theme="night"] .g1-tab {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .g1-tab.active {
+  background: rgba(167, 139, 250, 0.15) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .g1-diff-btn,
+html[data-theme="night"] .g2-mode-btn {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .g1-diff-btn.active,
+html[data-theme="night"] .g2-mode-btn.active {
+  background: rgba(167, 139, 250, 0.15) !important;
+  border-color: var(--nb-lavender) !important;
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .g1-info-label,
+html[data-theme="night"] .g2-info-label {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .g1-info-value,
+html[data-theme="night"] .g2-info-value {
+  color: var(--nb-gold-bright) !important;
+}
+
+/* ═══ 谢幕/提示 ═══ */
+html[data-theme="night"] .awm-total-notice,
+html[data-theme="night"] .pd-total-notice {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .awm-avatar-name {
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .awm-avatar-role {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .awm-avatar-note {
+  color: var(--nb-gold-dim) !important;
+}
+html[data-theme="night"] .awm-ship-notice,
+html[data-theme="night"] .pd-warn-box,
+html[data-theme="night"] .pd-tips-box,
+html[data-theme="night"] .awm-disclaimer {
+  background: rgba(167, 139, 250, 0.04) !important;
+  border-color: var(--nb-border) !important;
+  color: var(--nb-text) !important;
+}
+html[data-theme="night"] .awm-disclaimer-title,
+html[data-theme="night"] .pd-warn-title,
+html[data-theme="night"] .pd-tips-title,
+html[data-theme="night"] .awm-ship-notice-title {
+  color: var(--nb-gold-dim) !important;
+}
+
+/* ═══ 遮罩 & 弹窗 ═══ */
+html[data-theme="night"] .zuo-overlay {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+html[data-theme="night"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+html[data-theme="night"] .modal-content {
+  background: linear-gradient(135deg,
+    rgba(10, 0, 21, 0.50),
+    rgba(21, 8, 48, 0.50)) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .modal-content * {
+  color: var(--nb-text) !important;
+}
+
+/* ═══ 日志 ═══ */
+html[data-theme="night"] .rizhi-entry {
+  background: rgba(26, 10, 53, 0.55) !important;
+  border-color: var(--nb-border) !important;
+}
+html[data-theme="night"] .rizhi-entry * {
+  color: var(--nb-text) !important;
+}
+
+/* ═══ 日/夜 切换按钮自身 ═══ */
+html[data-theme="night"] .riye-toggle-btn.active {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .riye-toggle-btn.active .zuo-icon,
+html[data-theme="night"] .riye-toggle-btn.active .zuo-label {
+  color: var(--nb-gold-bright) !important;
+}

@@ -1,0 +1,637 @@
+/* ============================================================
+   guanyu.css — 关于（英雄区）样式
+   功能: 关于页面的视觉样式
+   依赖: 无（可独立加载）
+   [CREATED: 2026-06-10] [SELF-CONTAINED]
+   ============================================================ */
+
+/* ── 关于英雄区域 ── */
+.guanyu-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 12px 16px 8px;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateX(30px);
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.guanyu-hero.page-active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.guanyu-hero-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.guanyu-title {
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: #F5D742;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(245, 215, 66, 0.3);
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.guanyu-hero-decoration {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.guanyu-star {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  color: #F5D742;
+  animation: guanyu-star-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes guanyu-star-pulse {
+  0%   { opacity: 0.5; transform: scale(0.9); }
+  100% { opacity: 1;   transform: scale(1.1); }
+}
+
+/* ── 关于内容容器 ── */
+.guanyu-main-frame {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guanyu-content {
+  width: 100%;
+  color: #e8d5a3;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: left;
+  padding: 0 8px;
+}
+
+/* ── 关于卡片样式 ── */
+.guanyu-card {
+  background: rgba(20, 40, 55, 0.45);
+  border: 1px solid rgba(245, 184, 46, 0.15);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: background 0.25s ease;
+}
+
+.guanyu-card:hover {
+  background: rgba(20, 40, 55, 0.65);
+}
+
+.guanyu-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f5b82e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.guanyu-card-text {
+  color: #d4c8a8;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.guanyu-card-text a {
+  color: #f5b82e;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 184, 46, 0.3);
+  transition: border-color 0.2s ease;
+}
+
+.guanyu-card-text a:hover {
+  border-bottom-color: #f5b82e;
+}
+
+/* ── 版本信息 ── */
+.guanyu-version {
+  text-align: center;
+  padding: 20px;
+  color: rgba(245, 184, 46, 0.4);
+  font-size: 13px;
+}
+
+/* ── 管理员登录按钮 ── */
+.admin-toggle-btn {
+  background: rgba(245, 184, 46, 0.1);
+  border: 1px solid rgba(245, 184, 46, 0.25);
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: #f5b82e;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.admin-toggle-btn:hover {
+  background: rgba(245, 184, 46, 0.2);
+  border-color: rgba(245, 184, 46, 0.5);
+  transform: translateY(-1px);
+}
+
+.admin-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* ── 管理员面板 ── */
+.admin-panel {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid rgba(245, 184, 46, 0.15);
+  background: rgba(20, 40, 55, 0.3);
+  border-radius: 8px;
+  animation: admin-slide-in 0.3s ease;
+}
+
+@keyframes admin-slide-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.admin-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f5b82e;
+  margin-bottom: 12px;
+}
+
+/* ── 管理后台表单 ── */
+.admin-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(245, 184, 46, 0.3);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #d4c8a8;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-input:focus {
+  border-color: rgba(245, 184, 46, 0.6);
+}
+
+.admin-row {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-submit-btn {
+  background: #f5b82e;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+}
+
+.admin-submit-btn:hover {
+  background: #fcd34d;
+}
+
+.admin-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-status {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── 管理后台表格 ── */
+.admin-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-table thead tr {
+  background: rgba(245, 184, 46, 0.1);
+}
+
+.admin-table th {
+  padding: 10px;
+  text-align: left;
+  color: #f5b82e;
+  border-bottom: 1px solid rgba(245, 184, 46, 0.2);
+  font-weight: 600;
+}
+
+.admin-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.admin-table td input,
+.admin-table td select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-table tr:hover {
+  background: rgba(245, 184, 46, 0.05);
+}
+
+/* ── 管理后台添加表单容器 ── */
+.admin-add-form {
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(245, 184, 46, 0.05);
+  border: 1px solid rgba(245, 184, 46, 0.15);
+  border-radius: 8px;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 768px) {
+  .admin-table {
+    font-size: 12px;
+  }
+  .admin-table th,
+  .admin-table td {
+    padding: 6px 8px;
+  }
+}
+
+/* ============================================================
+   AWM订单管理（关于页管理后台用）
+   ============================================================ */
+.awm-orders-container {
+  background: rgba(16, 32, 48, 0.6);
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.awm-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(91, 192, 222, 0.15);
+}
+
+.awm-orders-title {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #5bc0de;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(91, 192, 222, 0.3);
+}
+
+.awm-logout-btn {
+  padding: 6px 16px;
+  background: rgba(255, 100, 100, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.awm-logout-btn:hover {
+  background: rgba(255, 100, 100, 0.25);
+  transform: translateY(-1px);
+}
+
+.awm-search-box {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid rgba(91, 192, 222, 0.25);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+}
+
+.awm-search-box:focus {
+  border-color: #5bc0de;
+  box-shadow: 0 0 8px rgba(91, 192, 222, 0.25);
+}
+
+.awm-add-form {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.awm-form-title {
+  color: #5bc0de;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.awm-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.awm-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.awm-form-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.awm-form-input,
+.awm-form-select {
+  padding: 8px 10px;
+  border: 1px solid rgba(91, 192, 222, 0.3);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.awm-form-input:focus,
+.awm-form-select:focus {
+  border-color: #5bc0de;
+  box-shadow: 0 0 6px rgba(91, 192, 222, 0.2);
+}
+
+.awm-time-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.awm-time-checkbox {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.awm-add-btn {
+  margin-top: 12px;
+  padding: 10px 25px;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.awm-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+.awm-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.awm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.awm-table th {
+  padding: 10px;
+  text-align: left;
+  color: #5bc0de;
+  background: rgba(91, 192, 222, 0.1);
+  border-bottom: 1px solid rgba(91, 192, 222, 0.2);
+  font-weight: 600;
+}
+
+.awm-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.awm-table tr:hover {
+  background: rgba(91, 192, 222, 0.05);
+}
+
+.awm-bullet-count {
+  color: #f5b82e;
+  font-weight: 600;
+}
+
+.awm-total-price {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.awm-notes {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+}
+
+.awm-created-at {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.awm-actions {
+  text-align: center;
+}
+
+.awm-edit-btn,
+.awm-delete-btn,
+.awm-save-btn,
+.awm-cancel-btn {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 4px;
+  transition: all 0.2s;
+}
+
+.awm-edit-btn {
+  background: rgba(245, 184, 46, 0.15);
+  color: #f5b82e;
+}
+
+.awm-edit-btn:hover {
+  background: rgba(245, 184, 46, 0.25);
+}
+
+.awm-delete-btn {
+  background: rgba(255, 100, 100, 0.15);
+  color: #ff6b6b;
+}
+
+.awm-delete-btn:hover {
+  background: rgba(255, 100, 100, 0.25);
+}
+
+.awm-save-btn {
+  background: #4ade80;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.awm-save-btn:hover {
+  background: #22c55e;
+}
+
+.awm-cancel-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.awm-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.awm-login-panel {
+  text-align: center;
+  padding: 20px;
+}
+
+.awm-login-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.awm-login-input {
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid rgba(91, 192, 222, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.awm-login-input:focus {
+  border-color: #5bc0de;
+  box-shadow: 0 0 8px rgba(91, 192, 222, 0.25);
+}
+
+.awm-login-status {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.awm-login-btn {
+  margin-top: 12px;
+  padding: 10px 30px;
+  background: linear-gradient(135deg, #5bc0de, #3498db);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.awm-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(91, 192, 222, 0.3);
+}
+
+@media (max-width: 768px) {
+  .awm-orders-container {
+    padding: 15px;
+  }
+  .awm-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .awm-table {
+    font-size: 12px;
+  }
+  .awm-table th,
+  .awm-table td {
+    padding: 6px 8px;
+  }
+  .awm-edit-btn,
+  .awm-delete-btn,
+  .awm-save-btn,
+  .awm-cancel-btn {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ── 隐藏滚动条但保持可滚动 ── */
+.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Edge */
+}

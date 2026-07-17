@@ -1,0 +1,7 @@
+木镐			https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/wooden_pickaxe.png
+石镐			https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/stone_pickaxe.png
+铜镐			https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/copper_pickaxe.png
+铁镐			https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/iron_pickaxe.png
+金镐			https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/golden_pickaxe.png
+钻石镐		https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/diamond_pickaxe.png
+下界合金镐	https://mcasset.cloud/1.21.5/assets/minecraft/textures/item/netherite_pickaxe.png

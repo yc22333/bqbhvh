@@ -1,0 +1,1490 @@
+/* 还有一个按钮，在右边框完全消失的时候，会出现一个音乐按钮，这个按钮也是像汉堡按钮一样拥有相同的规则。*/
+/* ── 子页容器 (覆盖在导航区上方, 滑入/滑出) ── */
+.zuo-page-container {
+  position: absolute;
+  top: 56px;          /* 紧接 header 下方 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(16px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  z-index: 5;
+}
+
+.zuo-page-container.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* ── 子页标题 ── */
+.zuo-page-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f5b82e;
+  padding: 16px 14px 8px;
+  white-space: nowrap;
+}
+
+/* ── 子页正文 ── */
+.zuo-page-content {
+  padding: 0 14px 14px;
+  color: #f5b82e;
+  font-size: 14px;
+  line-height: 1.7;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* ── 返回按钮 ── */
+.zuo-page-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 14px;
+  margin: 8px 14px 0;
+  color: #f5b82e;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  border-top: 1px solid rgba(245, 184, 46, 0.15);
+}
+
+.zuo-page-back:hover {
+  color: #fcd34d;
+}
+
+/* 子页容器滚动条 */
+.zuo-page-container::-webkit-scrollbar {
+  width: 3px;
+}
+.zuo-page-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.zuo-page-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+#zuo-panel.zuo-su .zuo-page-container {
+  display: none;  /* 收起时隐藏子页 */
+}/* ============================================================
+   zuo.css — 左侧边栏样式
+   功能: 200px 固定边栏 + 橘黄菜单 + 浮雕阴影 + 收缩展开
+   [CREATED: 2026-06-07] [SELF-CONTAINED]
+   ============================================================ */
+
+/* ── 边栏主框架 ── */
+body > #zuo-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  z-index: 100;
+
+  /* 半透明渐变背景 - 毛玻璃效果 */
+  background: linear-gradient(
+    175deg,
+    rgba(20, 40, 55, 0.65) 0%,
+    rgba(12, 26, 38, 0.70) 50%,
+    rgba(8, 18, 28, 0.75) 100%
+  );
+  /* backdrop-filter 已移除 — 粒子清晰穿透 */
+
+  /* 边缘阴影 + 浮雕立体感 */
+  box-shadow:
+    4px 0 16px rgba(0, 0, 0, 0.45),             /* 右侧外阴影 — 立体边缘 */
+    inset 2px 0 0 rgba(255, 255, 255, 0.06),    /* 左侧高光线 — 浮雕凸起 */
+    inset -1px 0 0 rgba(0, 0, 0, 0.3);          /* 右侧暗部线 — 浮雕深度 */
+
+  /* 0.5s 平滑过渡 — 快起始缓动 (点击即响应) */
+  transition:
+    width 0.5s cubic-bezier(0, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+
+  /* 内部定位锚点：子元素的 position:absolute 参照此容器 */
+  position: fixed;
+
+  /* overflow 由各子元素独立控制，防止裁切把手按钮 */
+
+  /* 内部布局 */
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* ── 收起状态 ── */
+#zuo-panel.zuo-su {
+  width: 60px;
+}
+
+/* ── 完全隐藏状态 (窄屏: 面板滑出左侧) ── */
+#zuo-panel.zuo-hidden {
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+/* 隐藏时把手随面板滑出，避免 right:-18px 突出可见 */
+#zuo-panel.zuo-hidden .zuo-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── 折叠时主内容区 margin-left 自适应 ──
+     左侧栏折叠(60px) → margin-left: 60px
+     左侧栏完全隐藏(滑出屏幕) → margin-left: 0
+     利用 ~ 兄弟选择器实现 */
+#zuo-panel.zuo-su ~ #main-content {
+  margin-left: 60px;
+}
+
+#zuo-panel.zuo-hidden ~ #main-content {
+  margin-left: 0;
+}
+
+/* ── 头部区域 (固定置顶) ── */
+.zuo-header {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;        /* 标题居中 */
+  height: 56px;
+  padding: 0 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  container-type: inline-size;    /* 启用容器查询，子元素可用 cqi 单位 */
+}
+
+/* ── 比奇堡菜单标题 (橘黄色 · 醒目 · 3D立体浮雕) ── */
+.zuo-title {
+  font-size: clamp(18px, 13cqi, 30px);
+  font-weight: 900;
+  color: #f5b82e;
+  /* 多层 text-shadow 打造 3D 立体浮雕字效 */
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.55),          /* 底部暗边 — 立体厚度 */
+    0 2px 0 rgba(0, 0, 0, 0.35),          /* 第二层厚度 */
+    1px 1px 0 rgba(0, 0, 0, 0.25),
+    0 3px 6px rgba(0, 0, 0, 0.5),         /* 底部柔阴影 — 悬浮深度 */
+    0 0 12px rgba(245, 184, 46, 0.30),    /* 橘黄辉光 */
+    0 0 24px rgba(245, 184, 46, 0.12);    /* 外层泛光 */
+  letter-spacing: clamp(2px, 2cqi, 6px);
+  flex-shrink: 0;
+}
+
+/* ── 收缩时显示的紧凑星标 (面板收窄为 60px 时替代标题) ── */
+.zuo-star-collapsed {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 0 4px rgba(245, 184, 46, 0.35));
+  transition: opacity 0.4s ease 0.1s;  /* 略微延迟，等标题滑出后再淡入 */
+}
+
+#zuo-panel.zuo-su .zuo-star-collapsed {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#zuo-panel.zuo-su .zuo-title {
+  /* 收缩时标题文字滑出后，同时从 flex 布局中收缩到 0 宽度，
+     避免占据空间导致星标无法居中 */
+  flex: 0 0 0;
+  min-width: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+/* 收起时 — 不设任何样式, 由 JS 处理动画 */
+
+/* ── 收缩/展开把手 (紧凑半圆弧 · 仿右侧 you-hide-btn 风格) ──
+   作为 #zuo-panel 的子元素，使用绝对定位自动跟随面板宽度变化
+   收起状态下面板宽度缩小为 60px，把手自动跟随无需额外规则 */
+.zuo-toggle {
+  position: absolute !important;
+  right: -18px;                   /* 微微凸出面板右边缘 */
+  top: 28px;                      /* 与上方头部(56px)中的标题垂直居中对齐 */
+  transform: translateY(-50%);
+  width: 18px;                    /* 窄凸起宽度 */
+  height: 48px;                   /* 修长竖向条形 */
+  border: 1px solid rgba(245, 184, 46, 0.20);
+  border-left: none;               /* 左侧无边框，与侧栏无缝贴合 */
+  border-radius: 0 30% 30% 0;     /* 右半微弧，更贴近右侧把手的柔润感 */
+  background: linear-gradient(
+    175deg,
+    rgba(20, 44, 60, 0.92) 0%,
+    rgba(12, 30, 45, 0.96) 100%
+  );
+  box-shadow:
+    3px 0 8px rgba(0, 0, 0, 0.30),
+    inset 1px 0 0 rgba(255, 255, 255, 0.05);
+  color: rgba(245, 184, 46, 0.45);
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+  z-index: 999;
+  padding: 0;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  pointer-events: auto !important;
+}
+
+.zuo-toggle:hover {
+  color: #f5b82e;
+  border-color: rgba(245, 184, 46, 0.45);
+  background: linear-gradient(
+    175deg,
+    rgba(30, 50, 65, 0.92) 0%,
+    rgba(16, 36, 52, 0.96) 100%
+  );
+  box-shadow:
+    3px 0 8px rgba(0, 0, 0, 0.30),
+    inset 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 0 10px rgba(245, 184, 46, 0.12);
+}
+
+.zuo-toggle:active {
+  color: #fcd34d;
+  border-color: rgba(245, 184, 46, 0.65);
+  box-shadow:
+    2px 0 6px rgba(0, 0, 0, 0.25),
+    0 0 12px rgba(245, 184, 46, 0.20);
+}
+
+/* ── 导航菜单区 ── */
+.zuo-nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+/* ── 单个菜单项 ── */
+.zuo-item {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+
+  /* 背景过渡 — 悬停反馈 */
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+/* 悬停反馈动画 — 背景呼吸 + 左侧高亮条 */
+.zuo-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: rgba(240, 179, 75, 0);
+  transition:
+    background 0.25s ease,
+    top 0.25s ease,
+    bottom 0.25s ease;
+}
+
+.zuo-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.zuo-item:hover::before {
+  background: rgba(240, 179, 75, 0.7);
+  top: 8px;
+  bottom: 8px;
+}
+
+/* 活跃状态 */
+.zuo-item.active {
+  background: rgba(240, 179, 75, 0.1);
+}
+
+.zuo-item.active::before {
+  background: #f0b34b;
+  top: 8px;
+  bottom: 8px;
+}
+
+/* ── 菜单图标 ── */
+.zuo-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #f5b82e;
+  transition: color 0.2s ease;
+}
+
+.zuo-item:hover .zuo-icon {
+  color: #fcd34d;
+}
+
+.zuo-item.active .zuo-icon {
+  color: #f5b82e;
+}
+
+/* ── 菜单文本标签 ── */
+.zuo-label {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #f5b82e;
+  transition:
+    opacity 0.3s ease,
+    margin-left 0.3s ease,
+    color 0.2s ease;
+  white-space: nowrap;
+}
+
+.zuo-item:hover .zuo-label {
+  color: #fcd34d;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.zuo-item.active .zuo-label {
+  color: #f5b82e;
+}
+
+/* ── ★ 首页菜单项特殊样式：放大 + 海绵宝宝黄 + 3D立体 ── */
+.zuo-item[data-page="shouye"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  /* 3D立体效果 — 多层 drop-shadow 模拟浮雕深度 */
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+/* 首页菜单悬停时 — 增强辉光 */
+.zuo-item[data-page="shouye"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+/* 首页菜单活跃时 — 高亮加强 */
+.zuo-item[data-page="shouye"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+/* 首页图标同步增强 */
+.zuo-item[data-page="shouye"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="shouye"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="shouye"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 鼠鼠卡战备菜单项特殊样式：放大 + 海绵宝宝黄 + 3D立体 ── */
+.zuo-item[data-page="shushukazhanbei"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  /* 3D立体效果 — 多层 drop-shadow 模拟浮雕深度 */
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+/* 鼠鼠卡战备菜单悬停时 — 增强辉光 */
+.zuo-item[data-page="shushukazhanbei"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+/* 鼠鼠卡战备菜单活跃时 — 高亮加强 */
+.zuo-item[data-page="shushukazhanbei"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+/* 鼠鼠卡战备图标同步增强 */
+.zuo-item[data-page="shushukazhanbei"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="shushukazhanbei"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="shushukazhanbei"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ AW子弹报价菜单项特殊样式：放大 + 海绵宝宝黄 + 3D立体 ── */
+.zuo-item[data-page="awmzidan"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  /* 3D立体效果 — 多层 drop-shadow 模拟浮雕深度 */
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="awmzidan"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="awmzidan"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="awmzidan"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="awmzidan"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="awmzidan"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 哈弗币回收菜单项特殊样式：放大 + 海绵宝宝黄 + 3D立体 ── */
+.zuo-item[data-page="hafubihuishou"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="hafubihuishou"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="hafubihuishou"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="hafubihuishou"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="hafubihuishou"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="hafubihuishou"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 哈弗币回收菜单项特殊样式：放大 + 海绵宝宝黄 + 3D立体 ── */
+.zuo-item[data-page="hafubihuishou"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="hafubihuishou"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="hafubihuishou"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="hafubihuishou"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="hafubihuishou"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="hafubihuishou"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 护航菜单项特殊样式 ── */
+.zuo-item[data-page="huhang"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="huhang"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="huhang"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="huhang"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="huhang"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="huhang"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 买物资+找锁车菜单项特殊样式 ── */
+.zuo-item[data-page="maiwuzi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="maiwuzi"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="maiwuzi"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="maiwuzi"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="maiwuzi"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="maiwuzi"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 陪玩菜单项特殊样式 ── */
+.zuo-item[data-page="peiwan"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="peiwan"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="peiwan"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="peiwan"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="peiwan"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="peiwan"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 下单跑刀菜单项特殊样式 ── */
+.zuo-item[data-page="paodao"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="paodao"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="paodao"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="paodao"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="paodao"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="paodao"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 牢区小游戏菜单项特殊样式 ── */
+.zuo-item[data-page="laoquyouxi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="laoquyouxi"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="laoquyouxi"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="laoquyouxi"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="laoquyouxi"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="laoquyouxi"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 日志菜单项特殊样式 ── */
+.zuo-item[data-page="rizhi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="rizhi"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="rizhi"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="rizhi"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="rizhi"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="rizhi"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── ★ 关于菜单项特殊样式 ── */
+.zuo-item[data-page="guanyu"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25))
+    drop-shadow(0 0 20px rgba(245, 184, 46, 0.10));
+}
+
+.zuo-item[data-page="guanyu"]:hover .zuo-label {
+  color: #fcd34d;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 16px rgba(245, 184, 46, 0.45))
+    drop-shadow(0 0 32px rgba(245, 184, 46, 0.22));
+}
+
+.zuo-item[data-page="guanyu"].active .zuo-label {
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 18px rgba(245, 184, 46, 0.55))
+    drop-shadow(0 0 36px rgba(245, 184, 46, 0.28));
+}
+
+.zuo-item[data-page="guanyu"] .zuo-icon {
+  font-size: 20px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.zuo-item[data-page="guanyu"]:hover .zuo-icon {
+  color: #fcd34d;
+  filter: drop-shadow(0 0 10px rgba(245, 184, 46, 0.4));
+}
+
+.zuo-item[data-page="guanyu"].active .zuo-icon {
+  color: #f5b82e;
+  filter: drop-shadow(0 0 14px rgba(245, 184, 46, 0.5));
+}
+
+/* ── 收起时 — 标签隐藏，图标居中 ── */
+#zuo-panel.zuo-su .zuo-label {
+  opacity: 0;
+  margin-left: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#zuo-panel.zuo-su .zuo-item {
+  justify-content: center;
+  padding: 0;
+}
+
+/* ── 滚动条美化 ── */
+.zuo-nav::-webkit-scrollbar {
+  width: 3px;
+}
+.zuo-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.zuo-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+/* ============================================================
+   窄屏汉堡按钮 — 三条横杠 (面板隐藏时显示)
+   ============================================================ */
+
+body > .zuo-hamburger {
+  position: fixed !important;
+  left: 14px !important;
+  top: 14px !important;
+  z-index: 999999;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(245, 184, 46, 0.25);
+  border-radius: 10px;
+  background: rgba(20, 40, 55, 0.88);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  /* 默认隐藏：缩小 + 透明（避免使用 translateY 与 fixed 冲突） */
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+body > .zuo-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2.5px;
+  background: #f5b82e;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+body > .zuo-hamburger:hover {
+  background: rgba(245, 184, 46, 0.18);
+  border-color: rgba(245, 184, 46, 0.5);
+}
+
+body > .zuo-hamburger:hover span {
+  background: #fcd34d;
+}
+
+body > .zuo-hamburger:active {
+  background: rgba(245, 184, 46, 0.25);
+  transform: scale(0.93);
+}
+
+/* ── 显示状态：缩放到原始大小 ── */
+body > .zuo-hamburger--show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* ── 互斥锁：面板非隐藏状态时 (非 zuo-hidden)，汉堡按钮强制隐藏 ──
+     状态①(全展开) 和 状态②(60px收缩) 都不显示汉堡，
+     仅状态③(完全隐藏) 时才显示 */
+#zuo-panel:not(.zuo-hidden) ~ .zuo-hamburger {
+  opacity: 0 !important;
+  transform: scale(0.8) !important;
+  pointer-events: none !important;
+}
+
+/* ============================================================
+   窄屏遮罩层 — 面板展开时覆盖内容
+   ============================================================ */
+.zuo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.zuo-overlay--show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 下拉菜单打开时，外部把手可点击（不被遮罩层拦截） */
+.zuo-dropdown--open .zuo-dropdown-handle {
+  pointer-events: auto !important;
+  z-index: 999;
+}
+
+/* 面板在 overlay 模式下内部恢复交互 */
+#zuo-panel.zuo-overlay-mode {
+  box-shadow:
+    4px 0 24px rgba(0, 0, 0, 0.55),
+    inset 2px 0 0 rgba(255, 255, 255, 0.06),
+    inset -1px 0 0 rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   主内容区置于下拉面板之下
+   ============================================================ */
+#main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   窄屏下拉导航面板 — 从顶部展开 (状态④)
+   ============================================================ */
+
+.zuo-dropdown {
+  position: relative;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999999 !important;
+  background: linear-gradient(135deg, rgba(12, 25, 38, 0.98), rgba(8, 18, 28, 0.98));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(245, 184, 46, 0.12);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  /* 默认：完全缩到顶部 */
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.45s cubic-bezier(0, 0, 0.2, 1),
+    opacity 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.zuo-dropdown--open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── 打开时，把手也跟随可点 ── */
+.zuo-dropdown--open .zuo-dropdown-handle {
+  pointer-events: auto;
+}
+
+/* ── 头部：标题 ── */
+.zuo-dropdown-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 12px;
+  border-bottom: 1px solid rgba(245, 184, 46, 0.10);
+  margin-bottom: 6px;
+  cursor: default;
+  position: relative;
+}
+
+.zuo-dropdown-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f5b82e;
+  letter-spacing: 1px;
+}
+
+/* ── 下拉菜单右上角切换按钮 ── */
+.riye-toggle-header {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  color: #f5b82e;
+  white-space: nowrap;
+  user-select: none;
+  padding: 4px 10px;
+  border: 1px solid rgba(245, 184, 46, 0.2);
+  border-radius: 6px;
+  opacity: 0.75;
+  transition: opacity 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.riye-toggle-header:hover {
+  opacity: 1;
+  background: rgba(245, 184, 46, 0.08);
+  border-color: rgba(245, 184, 46, 0.4);
+}
+
+.riye-toggle-header:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* ── 收起把手 (absolute 定位在面板底部外侧，凸出) ── */
+.zuo-dropdown-handle {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 16px;
+  border: 1px solid rgba(245, 184, 46, 0.20);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  background: rgba(12, 25, 38, 0.96);
+  color: #f5b82e;
+  font-size: 8px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+  padding: 0;
+}
+
+.zuo-dropdown-handle:hover {
+  background: rgba(245, 184, 46, 0.12);
+  border-color: rgba(245, 184, 46, 0.45);
+}
+
+.zuo-dropdown-handle:active {
+  background: rgba(245, 184, 46, 0.22);
+}
+
+/* ── 导航菜单区 ── */
+.zuo-dropdown-nav {
+  padding: 4px 20px 12px;
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.zuo-dropdown-nav .zuo-item {
+  flex: 0 0 auto;
+  color: #f5b82e;
+  transition:
+    color 0.2s ease;
+}
+
+/* 下拉菜单中隐藏图标（只显示文字按钮，避免空间浪费） */
+.zuo-dropdown-nav .zuo-icon {
+  display: none;
+}
+
+/* 屏蔽全局 .zuo-item hover 效果对下拉菜单的污染 */
+.zuo-dropdown-nav .zuo-item:hover {
+  background: transparent;
+  border-left-color: transparent;
+}
+
+.zuo-dropdown-nav .zuo-item:hover::before {
+  display: none;
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="shouye"]:hover .zuo-label {
+  filter: none;
+}
+
+.zuo-dropdown-nav .zuo-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #f5b82e;
+  cursor: pointer;
+  pointer-events: auto;
+  border: 1px solid rgba(245, 184, 46, 0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.zuo-dropdown-nav .zuo-label:hover {
+  color: #fcd34d;
+  border-color: rgba(245, 184, 46, 0.7);
+  background: rgba(245, 184, 46, 0.08);
+}
+
+/* 下拉菜单中首页标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="shouye"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="shouye"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中鼠鼠卡战备标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="shushukazhanbei"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="shushukazhanbei"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 AW子弹报价 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="awmzidan"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="awmzidan"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 哈弗币回收 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="hafubihuishou"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="hafubihuishou"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 护航 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="huhang"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="huhang"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 买物资+找锁车 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="maiwuzi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="maiwuzi"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* ============================================================
+   响应式修复 — 防止手机端先显示PC布局再闪动到移动端
+   原理：在CSS层面提前隐藏侧边栏、显示汉堡按钮，
+         不等JS异步执行，消除首屏布局闪烁
+   ============================================================ */
+@media (max-width: 750px) {
+  /* 侧边栏默认隐藏（滑出左侧） */
+  #zuo-panel {
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  /* 侧边栏折叠按钮隐藏 */
+  #zuo-panel .zuo-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 主内容区不再留侧边栏宽度 */
+  #zuo-panel ~ #main-content {
+    margin-left: 0;
+  }
+
+  /* 汉堡按钮默认显示 */
+  body > .zuo-hamburger {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+}
+
+/* 下拉菜单中 陪玩 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="peiwan"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="peiwan"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 下单跑刀 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="paodao"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="paodao"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 牢区小游戏 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="laoquyouxi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="laoquyouxi"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}
+
+/* 下拉菜单中 买物资+找锁车 标签同步特殊样式 */
+.zuo-dropdown-nav .zuo-item[data-page="maiwuzi"] .zuo-label {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f5b82e;
+  filter:
+    drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 10px rgba(245, 184, 46, 0.25));
+}
+
+.zuo-dropdown-nav .zuo-item[data-page="maiwuzi"] .zuo-icon {
+  font-size: 22px;
+  color: #f5b82e;
+  filter: drop-shadow(0 0 6px rgba(245, 184, 46, 0.25));
+}

@@ -1,0 +1,321 @@
+/* ============================================================
+   youxi1.css — 气泡点击游戏（游戏一）样式
+   功能: 选项卡导航 + 气泡点击游戏视觉样式
+   风格: 参考 awm.css / huishou.css 主题配色
+   [CREATED: 2026-06-11] [SELF-CONTAINED]
+   ============================================================ */
+
+/* ── 游戏选项卡导航 ── */
+.g1-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.g1-tab {
+  flex: 1;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  border-radius: 8px;
+  color: #d4c07a;
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.35;
+}
+
+.g1-tab:hover {
+  background: rgba(91, 192, 222, 0.12);
+  border-color: rgba(91, 192, 222, 0.4);
+  transform: translateY(-2px);
+}
+
+.g1-tab:active {
+  transform: translateY(1px);
+}
+
+.g1-tab.active {
+  background: rgba(91, 192, 222, 0.15);
+  border-color: #5BC0DE;
+  color: #5BC0DE;
+  text-shadow: 0 0 6px rgba(91, 192, 222, 0.3);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ── 游戏面板容器 ── */
+.g1-panel {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.g1-panel.active {
+  display: flex;
+}
+
+/* ── 难度选择行 ── */
+.g1-diff-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.g1-diff-btn {
+  padding: 6px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  border-radius: 6px;
+  color: #d4c07a;
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  font-weight: 600;
+  cursor: pointer;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.g1-diff-btn:hover {
+  background: rgba(91, 192, 222, 0.1);
+  border-color: rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+.g1-diff-btn.active {
+  background: rgba(245, 215, 66, 0.15);
+  border-color: #F5D742;
+  color: #F5D742;
+  text-shadow: 0 0 6px rgba(245, 215, 66, 0.3);
+}
+
+/* ── 游戏信息栏 ── */
+.g1-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: #e8d48b;
+  border: 1px solid rgba(91, 192, 222, 0.08);
+}
+
+.g1-info-item {
+  text-align: center;
+}
+
+.g1-info-label {
+  font-size: 0.75em;
+  color: #8ab4c8;
+}
+
+.g1-info-value {
+  font-weight: bold;
+  color: #F5D742;
+  font-size: 1.15em;
+}
+
+/* ── 游戏区域画布 ── */
+.g1-game-box {
+  width: 100%;
+  height: 380px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+  border: 1px solid rgba(91, 192, 222, 0.08);
+  flex-shrink: 0;
+}
+
+/* ── 气泡样式 ── */
+.g1-bubble {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+  z-index: 2;
+}
+
+.g1-bubble:hover {
+  transform: scale(1.15);
+}
+
+.g1-bubble:active {
+  transform: scale(0.85);
+}
+
+/* 气泡难度配色 */
+.g1-bubble.easy {
+  background: linear-gradient(135deg, #52c41a, #95de64);
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.4);
+}
+
+.g1-bubble.hard {
+  background: linear-gradient(135deg, #1677ff, #59c7ff);
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.4);
+}
+
+.g1-bubble.hell {
+  background: linear-gradient(135deg, #f5222d, #ff7875);
+  box-shadow: 0 2px 8px rgba(245, 34, 45, 0.4);
+}
+
+/* ── 控制按钮容器 ── */
+.g1-ctrl {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.g1-ctrl-btn {
+  padding: 10px 28px;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.g1-ctrl-btn:hover {
+  transform: translateY(-2px);
+}
+
+.g1-ctrl-btn:active {
+  transform: translateY(1px);
+}
+
+.g1-ctrl-btn:disabled {
+  background: #444 !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.g1-btn-start {
+  background: #5BC0DE;
+  color: #fff;
+}
+
+.g1-btn-start:hover {
+  background: #4ab0d0;
+}
+
+.g1-btn-quit {
+  background: #FF6B9D;
+  color: #fff;
+}
+
+.g1-btn-quit:hover {
+  background: #e85a8c;
+}
+
+.g1-btn-leaderboard {
+  background: #F5A623;
+  color: #fff;
+}
+
+.g1-btn-leaderboard:hover {
+  background: #e09516;
+}
+
+/* ── 结果面板 ── */
+.g1-result {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  display: none;
+  color: #e8d48b;
+  border: 1px solid rgba(91, 192, 222, 0.1);
+  flex-shrink: 0;
+}
+
+.g1-result-title {
+  color: #F5D742;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.g1-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+
+.g1-result-item {
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.g1-result-label {
+  color: #8ab4c8;
+  font-size: 0.85em;
+}
+
+.g1-result-value {
+  font-weight: bold;
+  color: #5BC0DE;
+  font-size: 1.2em;
+}
+
+/* ── 开始提示文字 ── */
+.g1-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.25);
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  pointer-events: none;
+  z-index: 1;
+  text-align: center;
+}
+
+/* ── 游戏结束遮罩 ── */
+.g1-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 12px;
+}
+
+.g1-overlay.show {
+  display: flex;
+}
+
+.g1-overlay-text {
+  color: #F5D742;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: bold;
+  text-shadow: 0 0 20px rgba(245, 215, 66, 0.5);
+}

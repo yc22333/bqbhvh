@@ -1,0 +1,659 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>比奇堡报价单</title>
+  <style>
+    /* 全局强制应用字体 */
+    *,
+    *::before,
+    *::after,
+    html,
+    body,
+    div,
+    span,
+    button,
+    p {
+      font-family: "楷体", "KaiTi", "STKaiti", serif !important;
+    }
+  </style>
+  <link rel="stylesheet" href="guize/base.css">
+  <link rel="stylesheet" href="kuangjia/bei.css">
+  <link rel="stylesheet" href="zuo/zuo.css">
+  <link rel="stylesheet" href="you/you.css">
+  <link rel="stylesheet" href="shouye/biaoti.css">
+  <link rel="stylesheet" href="shouye/zanzhu.css">
+  <link rel="stylesheet" href="shouye/mima.css">
+  <link rel="stylesheet" href="shouye/zhizao.css">
+  <link rel="stylesheet" href="shouye/ditu.css">
+  <link rel="stylesheet" href="kazhanbei/biaoti.css">
+  <link rel="stylesheet" href="kazhanbei/kazhanbei.css">
+  <link rel="stylesheet" href="awm/awm.css">
+  <link rel="stylesheet" href="guanyu/guanyu.css">
+  <link rel="stylesheet" href="maiwuzi/maihong.css">
+  <link rel="stylesheet" href="paodao/paodao.css">
+  <link rel="stylesheet" href="riye/riye.css">
+</head>
+<body>
+
+  <!-- 粒子背景层 -->
+  <canvas id="bei-canvas"></canvas>
+
+  <!-- 左侧边栏 -->
+  <aside id="zuo-panel">
+    <div class="zuo-header">
+      <span class="zuo-title">比奇堡菜单</span>
+      <!-- 收缩时仅显示的紧凑星标 -->
+      <svg class="zuo-star-collapsed" viewBox="0 0 28 28" aria-label="比奇堡">
+        <polygon points="14,2 17.5,11 27,11 19.5,16.5 22,26 14,20.5 6,26 8.5,16.5 1,11 10.5,11"
+                 fill="#f5b82e" opacity="0.9"/>
+      </svg>
+    </div>
+    <nav class="zuo-nav">
+      <div class="zuo-item" data-page="shouye">
+        <span class="zuo-icon">🏠</span>
+        <span class="zuo-label">首页</span>
+      </div>
+      <div class="zuo-item" data-page="shushukazhanbei">
+        <span class="zuo-icon">🎴</span>
+        <span class="zuo-label">鼠鼠卡战备</span>
+      </div>
+      <div class="zuo-item" data-page="awmzidan">
+        <span class="zuo-icon">🔫</span>
+        <span class="zuo-label">AW子弹报价</span>
+      </div>
+      <div class="zuo-item" data-page="paodao">
+        <span class="zuo-icon">🗡️</span>
+        <span class="zuo-label">下单跑刀</span>
+      </div>
+      <div class="zuo-item" data-page="maiwuzi">
+        <span class="zuo-icon">🛒</span>
+        <span class="zuo-label">买物资+找锁车</span>
+      </div>
+      <div class="zuo-item" data-page="guanyu">
+        <span class="zuo-icon">ℹ️</span>
+        <span class="zuo-label">关于</span>
+      </div>
+      <!-- 日夜模式切换按钮 -->
+      <div class="zuo-item riye-toggle-btn">
+        <span class="zuo-icon">☀️</span>
+        <span class="zuo-label">白昼模式</span>
+      </div>
+    </nav>
+    <!-- 左侧栏收缩展开按钮 -->
+    <button class="zuo-toggle" aria-label="切换菜单">◀</button>
+  </aside>
+
+  <!-- 左侧汉堡按钮 (窄屏时出现) -->
+  <button class="zuo-hamburger" id="zuoHamburger" aria-label="展开菜单">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- 窄屏下拉导航面板 -->
+  <div class="zuo-dropdown" id="zuoDropdown">
+    <div class="zuo-dropdown-header">
+      <span class="zuo-dropdown-title">📋 比奇堡菜单</span>
+      <div class="riye-toggle-btn riye-toggle-header">☀️ 白昼模式</div>
+    </div>
+    <nav class="zuo-dropdown-nav" id="zuoDropdownNav">
+      <div class="zuo-item" data-page="shouye">
+        <span class="zuo-label">首页</span>
+      </div>
+      <div class="zuo-item" data-page="shushukazhanbei">
+        <span class="zuo-label">鼠鼠卡战备</span>
+      </div>
+      <div class="zuo-item" data-page="awmzidan">
+        <span class="zuo-label">AW子弹报价</span>
+      </div>
+      <div class="zuo-item" data-page="paodao">
+        <span class="zuo-label">下单跑刀</span>
+      </div>
+      <div class="zuo-item" data-page="maiwuzi">
+        <span class="zuo-label">买物资+找锁车</span>
+      </div>
+      <div class="zuo-item" data-page="guanyu">
+        <span class="zuo-label">关于</span>
+      </div>
+    </nav>
+    <button class="zuo-dropdown-handle" id="zuoDropdownHandle" aria-label="收起菜单">▲</button>
+  </div>
+
+  <!-- 右侧边栏 -->
+  <aside id="you-panel">
+    <div class="you-player">
+      <div class="you-avatars">
+        <div class="you-avatar" style="background-image: url('photo/biqibao/haimianbaobao.jpg')" title="海绵宝宝"></div>
+        <div class="you-avatar" style="background-image: url('photo/biqibao/paidaxing.jpg')" title="派大星"></div>
+        <div class="you-avatar" style="background-image: url('photo/biqibao/zhangyuge.jpg')" title="章鱼哥"></div>
+        <div class="you-avatar" style="background-image: url('photo/biqibao/xielaoban.jpg')" title="蟹老板"></div>
+        <div class="you-avatar" style="background-image: url('photo/biqibao/pilaoban.jpg')" title="痞老板"></div>
+      </div>
+      <div class="you-group">
+        <div class="you-barchart" id="youBarchart"></div>
+        <div class="you-song-id">比奇堡电台</div>
+      <div class="you-controls">
+        <button class="you-btn you-btn-prev"  aria-label="上一曲">⏮</button>
+        <button class="you-btn you-btn-play"  aria-label="播放/暂停">▶</button>
+        <button class="you-btn you-btn-next"  aria-label="下一曲">⏭</button>
+      </div>
+      <audio id="youAudio" preload="auto"></audio>
+      </div>
+    </div>
+    <button class="you-hide-btn" aria-label="收起面板">▼</button>
+  </aside>
+
+  <!-- 右侧栏展开浮窗按钮 -->
+  <button class="you-expand-btn" id="youExpandBtn" aria-label="展开右侧栏">🎵</button>
+
+  <!-- 页面内容区 -->
+  <div id="main-content">
+
+    <!-- ═══ 首页：英雄区 ═══ -->
+    <section class="shouye-hero page-active" id="shouyeSection">
+      <div class="shouye-hero-content">
+        <h1 class="shouye-title">比奇堡鼠鼠工具</h1>
+        <div class="shouye-hero-decoration">
+          <span class="shouye-star">★</span>
+          <span class="shouye-star">★</span>
+          <span class="shouye-star">★</span>
+          <span class="shouye-star">★</span>
+          <span class="shouye-star">★</span>
+        </div>
+
+        <!-- 第一行：功能区 -->
+        <div class="shouye-row-1">
+          <!-- 第1框：感谢区 -->
+          <div class="shouye-card thank-card">
+            <div>感谢：<span class="id-zyg">章鱼哥</span>创建及维护</div>
+            <div>感谢：<span class="id-hmbb">海绵宝宝</span>提供资金支持</div>
+            <div>感谢：<span class="id-pdx">派大星</span>提供高防服务器</div>
+          </div>
+
+          <!-- 第2列：上下两个小按钮框 -->
+          <div class="shouye-col">
+            <div class="shouye-card btn-card" id="weixinBtn">
+              <span class="shouye-btn-text">💬 加入微信群</span>
+            </div>
+            <div class="shouye-card btn-card" id="kookBtn">
+              <span class="shouye-btn-text">🔊 鼠鼠聚集地</span>
+            </div>
+          </div>
+
+          <!-- 第3框：轮播卡片 -->
+          <div class="shouye-card lunbo-card">
+            <div class="lunbo-carousel">
+              <div class="lunbo-item active">广告位招商中</div>
+              <div class="lunbo-item">欢迎投放广告</div>
+              <div class="lunbo-item">比奇堡欢迎您</div>
+            </div>
+          </div>
+
+          <!-- 第4框：服务器状态 -->
+          <div class="shouye-card server-card">
+            <div class="server-content">
+              <div class="server-avatar" style="background: url('photo/biqibao/zhangyuge.jpg') center/cover;"></div>
+              <div class="server-right">
+                <div class="server-name" id="serverStatusName"></div>
+                <div class="server-bars">
+                  <div class="bar-item"><span class="bar-label">HP</span><div class="bar"><div class="bar-fill red"></div></div></div>
+                  <div class="bar-item"><span class="bar-label">饱食度</span><div class="bar"><div class="bar-fill blue"></div></div></div>
+                  <div class="bar-item"><span class="bar-label">疲劳度</span><div class="bar"><div class="bar-fill purple"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第一点五层：撞车北京时间 -->
+        <div class="shouye-row-1-5">
+          <div class="shouye-card time-card">
+            <div class="time-header">
+              <div class="time-header-left">
+                <span class="time-title">
+                  <span class="time-icon">⏰</span>
+                  <span class="time-title-text">撞车北京时间</span>
+                </span>
+              </div>
+            </div>
+            <div class="time-display" id="crashBeijingTime">
+              <span class="time-digits" id="crashTimeDigits">00:00:00</span>
+              <span class="time-millis" id="crashTimeMillis">.000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第二行：今日密码+地图 -->
+        <div class="shouye-row-2">
+          <div class="shouye-card maps-card">
+            <div class="maps-header">
+              <div class="maps-left">
+                <span class="maps-title maps-title-pink">
+                  <span class="maps-icon">🔑</span>
+                  <span class="maps-title-text">今日密码</span>
+                </span>
+              </div>
+            </div>
+            <div class="maps-grid">
+              <div class="map-item">
+                <div class="map-info-right">
+                  <div class="map-name">零号大坝</div>
+                  <div class="map-password" id="map-password-1">加载中...</div>
+                </div>
+                <img src="photo/ditu/daba.webp" alt="0号大坝">
+              </div>
+              <div class="map-item">
+                <div class="map-info-right">
+                  <div class="map-name">长弓溪谷</div>
+                  <div class="map-password" id="map-password-2">加载中...</div>
+                </div>
+                <img src="photo/ditu/changgong.webp" alt="长弓溪谷">
+              </div>
+              <div class="map-item">
+                <div class="map-info-right">
+                  <div class="map-name">巴克什</div>
+                  <div class="map-password" id="map-password-3">加载中...</div>
+                </div>
+                <img src="photo/ditu/bakeshen.webp" alt="巴克什">
+              </div>
+              <div class="map-item">
+                <div class="map-info-right">
+                  <div class="map-name">航天基地</div>
+                  <div class="map-password" id="map-password-4">加载中...</div>
+                </div>
+                <img src="photo/ditu/hangtian.webp" alt="航天基地">
+              </div>
+              <div class="map-item">
+                <div class="map-info-right">
+                  <div class="map-name">潮汐监狱</div>
+                  <div class="map-password" id="map-password-5">加载中...</div>
+                </div>
+                <img src="photo/ditu/jianyu.webp" alt="潮汐监狱">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第三行：今日制造 -->
+        <div class="shouye-row-3">
+          <div class="shouye-card maps-card">
+            <div class="maps-header">
+              <div class="maps-left">
+                <span class="maps-title craft-title-orange">
+                  <span class="maps-icon">🔩</span>
+                  <span class="maps-title-text">今日制造</span>
+                </span>
+              </div>
+            </div>
+            <div class="maps-grid" id="craftGrid">
+              <div class="craft-item">
+                <div class="craft-item-header">
+                  <div class="craft-item-img"></div>
+                  <div class="craft-item-info">
+                    <div class="craft-item-name"></div>
+                    <div class="craft-item-grade"></div>
+                  </div>
+                </div>
+                <div class="craft-item-materials"></div>
+              </div>
+              <div class="craft-item">
+                <div class="craft-item-header">
+                  <div class="craft-item-img"></div>
+                  <div class="craft-item-info">
+                    <div class="craft-item-name"></div>
+                    <div class="craft-item-grade"></div>
+                  </div>
+                </div>
+                <div class="craft-item-materials"></div>
+              </div>
+              <div class="craft-item">
+                <div class="craft-item-header">
+                  <div class="craft-item-img"></div>
+                  <div class="craft-item-info">
+                    <div class="craft-item-name"></div>
+                    <div class="craft-item-grade"></div>
+                  </div>
+                </div>
+                <div class="craft-item-materials"></div>
+              </div>
+              <div class="craft-item">
+                <div class="craft-item-header">
+                  <div class="craft-item-img"></div>
+                  <div class="craft-item-info">
+                    <div class="craft-item-name"></div>
+                    <div class="craft-item-grade"></div>
+                  </div>
+                </div>
+                <div class="craft-item-materials"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第四行：地图工具 -->
+        <div class="shouye-row-4">
+          <div class="shouye-card maps-card">
+            <div class="maps-header">
+              <div class="maps-left">
+                <span class="maps-title craft-title-orange">
+                  <span class="maps-icon">🗺️</span>
+                  <span class="maps-title-text">三角洲地图</span>
+                </span>
+              </div>
+            </div>
+            <div class="ditu-container" id="dituContainer">
+              <!-- 地图内容由 JS 动态添加 -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ 鼠鼠卡战备专区 ═══ -->
+    <section class="shushukazhanbei-hero" id="shushukazhanbeiSection">
+      <div class="shushukazhanbei-hero-content">
+        <h1 class="shushukazhanbei-title">鼠鼠卡战备</h1>
+        <div class="shushukazhanbei-hero-decoration">
+          <span class="shushukazhanbei-star">★</span>
+          <span class="shushukazhanbei-star">★</span>
+          <span class="shushukazhanbei-star">★</span>
+          <span class="shushukazhanbei-star">★</span>
+          <span class="shushukazhanbei-star">★</span>
+        </div>
+
+        <div class="shushukazhanbei-main-frame">
+          <div class="shushukazhanbei-panels">
+            <div class="shushukazhanbei-panel" data-tier="0">11W</div>
+            <div class="shushukazhanbei-panel" data-tier="1">18W</div>
+            <div class="shushukazhanbei-panel" data-tier="2">55W</div>
+            <div class="shushukazhanbei-panel" data-tier="3">60W</div>
+            <div class="shushukazhanbei-panel" data-tier="4">78W</div>
+          </div>
+          <div class="shushukazhanbei-battle-detail" id="shushukazhanbeiBattleDetail"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ AW子弹报价专区 ═══ -->
+    <section class="awmzidan-hero" id="awmzidanSection">
+      <div class="awmzidan-hero-content">
+        <h1 class="awmzidan-title">AW子弹报价</h1>
+        <div class="awmzidan-hero-decoration">
+          <span class="awmzidan-star">★</span>
+          <span class="awmzidan-star">★</span>
+          <span class="awmzidan-star">★</span>
+          <span class="awmzidan-star">★</span>
+          <span class="awmzidan-star">★</span>
+        </div>
+
+        <div class="awmzidan-main-frame">
+          <div class="awmzidan-content" id="awmzidanContent">
+
+            <!-- 选项卡导航 -->
+            <div class="awm-tabs">
+              <div class="awm-tab active" data-tab="buy">AW子弹购买</div>
+              <div class="awm-tab" data-tab="sell">AW子弹回收</div>
+            </div>
+
+            <!-- 购买面板 -->
+            <div class="awm-panel active" id="awmPanelBuy">
+              <div class="awm-calc-row">
+                <div class="awm-calc-options">
+                  <div class="awm-options">
+                    <div class="awm-option active" data-option="genche" data-price-note="1.25一发">自己跟车</div>
+                    <div class="awm-option" data-option="shanghao" data-price-note="1.3一发">打手上号</div>
+                  </div>
+                  <div class="awm-price-note">1.25/发<br>1.30/发</div>
+                </div>
+                <div class="awm-calc-input-area">
+                  <div class="awm-input-row-wrapper">
+                    <div class="awm-input-frame">
+                      <span class="awm-input-label">AWM子弹数量（发）</span>
+                      <input type="text" inputmode="numeric" pattern="[0-9]*" class="awm-input" id="awBuyQty" placeholder="请输入数量">
+                    </div>
+                    <div class="awm-amount-frame">
+                      <span class="awm-amount-label">老板支付金额</span>
+                      <span class="awm-amount-value" id="awmBuyAmount">0.00 元</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="awm-total-notice">
+                <span class="awm-total-notice-icon">✅</span>
+                <span class="awm-total-notice-text">核算总价后：截图发派单人，确认金额无误即可安排下单收货！</span>
+              </div>
+            </div>
+
+            <!-- 回收面板 -->
+            <div class="awm-panel" id="awmPanelSell">
+              <div class="awm-calc-row">
+                <div class="awm-calc-options">
+                  <div class="awm-options">
+                    <div class="awm-option active" data-option="dashou" data-price-note="0.7一发">打手上号</div>
+                    <div class="awm-option" data-option="genche" data-price-note="0.65一发">自己跟车</div>
+                  </div>
+                  <div class="awm-price-note">上号0.70/发<br>跟车0.65/发</div>
+                </div>
+                <div class="awm-calc-input-area">
+                  <div class="awm-input-row-wrapper">
+                    <div class="awm-input-frame">
+                      <span class="awm-input-label">AWM子弹数量（发）</span>
+                      <input type="number" class="awm-input" id="awmSellInput" placeholder="请输入数量" min="1">
+                    </div>
+                    <div class="awm-amount-frame">
+                      <span class="awm-amount-label">老板到手金额</span>
+                      <span class="awm-amount-value" id="awmSellAmount">0.00 元</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="awm-total-notice">
+                <span class="awm-total-notice-icon">✅</span>
+                <span class="awm-total-notice-text">核算总价后：截图发派单人，确认金额无误即可安排下单出货！</span>
+              </div>
+            </div>
+
+            <!-- 派单认准 -->
+            <div class="awm-avatar-frame">
+              <div class="awm-avatar-title">👑 派单认准以下成员</div>
+              <div class="awm-avatar-row">
+                <div class="awm-avatar-ball">
+                  <div class="awm-avatar-icon"><img src="photo/biqibao/zhangyuge.jpg" alt="章鱼哥"></div>
+                  <div class="awm-avatar-name">章鱼哥</div>
+                  <div class="awm-avatar-role" data-wechat="V19548181816">微信：V19548181816</div>
+                  <button class="awm-avatar-copy" data-wechat="V19548181816">复制微信号</button>
+                </div>
+                <div class="awm-avatar-ball">
+                  <div class="awm-avatar-icon"><img src="photo/biqibao/haimianbaobao.jpg" alt="海绵宝宝"></div>
+                  <div class="awm-avatar-name">海绵宝宝</div>
+                  <div class="awm-avatar-role" data-wechat="pw929370">微信：pw929370</div>
+                  <button class="awm-avatar-copy" data-wechat="pw929370">复制微信号</button>
+                </div>
+                <div class="awm-avatar-ball">
+                  <div class="awm-avatar-icon"><img src="photo/biqibao/paidaxing.jpg" alt="派大星"></div>
+                  <div class="awm-avatar-name">派大星</div>
+                  <div class="awm-avatar-role" data-wechat="hope08042w">微信：hope08042w</div>
+                  <button class="awm-avatar-copy" data-wechat="hope08042w">复制微信号</button>
+                </div>
+              </div>
+              <div class="awm-avatar-note">⚠️ 派单仅认准群主：章鱼哥 / 管理：派大星 / 管理：海绵宝宝</div>
+            </div>
+
+            <!-- 购买底部 -->
+            <div class="awm-bottom-section active" id="awmBottomBuy">
+              <div class="awm-bottom-row">
+                <div class="awm-disclaimer">
+                  <div class="awm-disclaimer-title">⚠️ 免责声明</div>
+                  <div class="awm-disclaimer-body">
+                    仅认可群主章鱼哥/管理员，派发的订单<br>
+                    私自线下交易产生损失，本店概不负责<br>
+                    非本店订单，本店不提供相关资料与凭证<br>
+                    上下账号请提前协商，顶号造成损失由号主承担
+                  </div>
+                </div>
+                <div class="awm-receive-notice">
+                  <div class="awm-receive-notice-title">📦 收货须知</div>
+                  <div class="awm-receive-notice-body">
+                    打手出货期间可能会开直播<br>
+                    老板请勿说违禁词语<br>
+                    以免导致打手直播间被封<br>
+                    打手全程指挥老板只要跟着吃就行
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 回收底部 -->
+            <div class="awm-bottom-section" id="awmBottomSell">
+              <div class="awm-bottom-row">
+                <div class="awm-disclaimer">
+                  <div class="awm-disclaimer-title">⚠️ 免责声明</div>
+                  <div class="awm-disclaimer-body">
+                    仅认可群主章鱼哥/管理员，派发的订单<br>
+                    私自线下交易产生损失，本店概不负责<br>
+                    非本店订单，本店不提供相关资料与凭证<br>
+                    上下账号请提前协商，顶号造成损失由号主承担
+                  </div>
+                </div>
+                <div class="awm-ship-notice">
+                  <div class="awm-ship-notice-title">📌 出货须知</div>
+                  <div class="awm-ship-notice-body">
+                    出弹会产生哈夫币损耗，机密带入物资上限300W<br>
+                    单局带入35~42发，每百发子弹损耗约200W~500W<br>
+                    效率：百发1小时，坐牢撞不到时百发2小时或以上<br>
+                    周末/节假日/赛季初，会比较牢，用时会比较久
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 卖AW统计 -->
+            <div class="awm-stats-section active" id="awmStatsBuy">
+              <div id="awmDonationsContainer"></div>
+            </div>
+
+            <!-- 回收AW统计 -->
+            <div class="awm-stats-section" id="awmStatsSell">
+              <div id="awmOrdersSlot"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 背景装饰 -->
+      <div class="awm-bg-deco">
+        <span class="awm-bubble" style="left:8%;width:20px;height:20px;animation-delay:0s;"></span>
+        <span class="awm-bubble" style="left:25%;width:14px;height:14px;animation-delay:1.2s;"></span>
+        <span class="awm-bubble" style="left:45%;width:26px;height:26px;animation-delay:0.6s;"></span>
+        <span class="awm-bubble" style="left:65%;width:16px;height:16px;animation-delay:2s;"></span>
+        <span class="awm-bubble" style="left:82%;width:28px;height:28px;animation-delay:0.3s;"></span>
+        <span class="awm-bubble" style="left:92%;width:12px;height:12px;animation-delay:1.8s;"></span>
+        <div class="awm-seacoral awm-seacoral-left">🪸</div>
+        <div class="awm-seacoral awm-seacoral-right">🪸</div>
+      </div>
+    </section>
+
+    <!-- ═══ 下单跑刀专区 ═══ -->
+    <section class="paodao-hero" id="paodaoSection">
+      <div class="paodao-hero-content">
+        <h1 class="paodao-title">下单跑刀</h1>
+        <div class="paodao-hero-decoration">
+          <span class="paodao-star">★</span>
+          <span class="paodao-star">★</span>
+          <span class="paodao-star">★</span>
+          <span class="paodao-star">★</span>
+          <span class="paodao-star">★</span>
+        </div>
+
+        <div class="paodao-main-frame">
+          <div class="paodao-content" id="paodaoContent">
+            <!-- 下单跑刀内容由 JS 动态渲染 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 买物资+找锁车专区 ═══ -->
+    <section class="maiwuzi-hero" id="maiwuziSection">
+      <div class="maiwuzi-hero-content">
+        <h1 class="maiwuzi-title">买物资+找锁车</h1>
+        <div class="maiwuzi-hero-decoration">
+          <span class="maiwuzi-star">★</span>
+          <span class="maiwuzi-star">★</span>
+          <span class="maiwuzi-star">★</span>
+          <span class="maiwuzi-star">★</span>
+          <span class="maiwuzi-star">★</span>
+        </div>
+
+        <div class="maiwuzi-main-frame">
+          <div class="maiwuzi-content" id="maiwuziContent">
+            <!-- 买物资+找锁车内容由 JS 动态渲染 -->
+            <div class="developing-text">待开发...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 关于专区 ═══ -->
+    <section class="guanyu-hero" id="guanyuSection">
+      <div class="guanyu-hero-content">
+        <h1 class="guanyu-title">ℹ️ 关于</h1>
+        <div class="guanyu-hero-decoration">
+          <span class="guanyu-star">★</span>
+          <span class="guanyu-star">★</span>
+          <span class="guanyu-star">★</span>
+          <span class="guanyu-star">★</span>
+          <span class="guanyu-star">★</span>
+        </div>
+
+        <div class="guanyu-main-frame">
+          <div class="guanyu-content" id="guanyuContent">
+            <!-- 关于内容由 JS 动态渲染 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 微信弹窗 -->
+    <div class="weixin-modal" id="weixinModal">
+      <div class="weixin-modal-content">
+        <div class="weixin-modal-header">
+          <span>加入微信群</span>
+          <span class="weixin-modal-close" id="weixinModalClose">&times;</span>
+        </div>
+        <div class="weixin-modal-body">
+          <img src="photo/weixin/2qun.jpg" alt="微信群1" class="weixin-img">
+          <img src="photo/weixin/3qun.jpg" alt="微信群2" class="weixin-img">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="riye/riye.js"></script>
+  <script src="guize/mode.js"></script>
+  <script src="duijie/api.js"></script>
+  <script src="duijie/cloud-data.js"></script>
+  <script src="kuangjia/bei.js"></script>
+  <script src="zuo/zuo.js"></script>
+  <script src="you/you.js"></script>
+  <script src="shouye/biaoti.js"></script>
+  <script src="shouye/mima.js"></script>
+  <script src="shouye/zhizao.js"></script>
+  <script src="shouye/zanzhu.js"></script>
+  <script src="shouye/ditu.js"></script>
+  <script src="kazhanbei/biaoti.js"></script>
+  <script src="kazhanbei/kazhanbei.js"></script>
+  <script src="awm/orders.js"></script>
+  <script src="awm/awm.js"></script>
+  <script src="maiwuzi/maihong.js"></script>
+  <script src="paodao/paodao.js"></script>
+  <script src="guanyu/guanyu.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+# ============================================================
+# daily-refresh.yml — 每日 00:05 (北京时间) 自动刷新
+# 
+# 触发的API:
+#   🔐 今日密码 (map_pwd)    — 1 Token
+#   🏭 今日制造 (manufacture) — 4 Token
+#
+# 机制:
+#   通过 cache-manager (需管理员密码) 调用刷新
+#   密码存储在 GitHub Secrets 中 (ADMIN_KEY)
+# ============================================================
+name: 每日自动刷新 (00:05 北京)
+
+on:
+  schedule:
+    # 00:05 北京时间 = 16:05 UTC
+    - cron: '5 16 * * *'
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  refresh-map-pwd:
+    name: 🔐 刷新今日密码
+    runs-on: ubuntu-latest
+    steps:
+      - name: 调用密码刷新接口
+        run: |
+          echo "🔄 刷新今日密码..."
+          echo "   北京时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "https://${{ secrets.SITE_DOMAIN }}/.netlify/functions/cache-manager?admin_key=${{ secrets.ADMIN_KEY }}&action=refresh_single&endpoint=map_pwd")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "HTTP: $HTTP_CODE | 响应: $BODY"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ 密码刷新失败"
+            exit 1
+          fi
+          echo "✅ 今日密码刷新成功"
+
+  refresh-manufacture:
+    name: 🏭 刷新今日制造
+    runs-on: ubuntu-latest
+    needs: refresh-map-pwd
+    steps:
+      - name: 调用制造刷新接口
+        run: |
+          echo "🔄 刷新今日制造（4个工作台）..."
+          echo "   北京时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "https://${{ secrets.SITE_DOMAIN }}/.netlify/functions/cache-manager?admin_key=${{ secrets.ADMIN_KEY }}&action=refresh_single&endpoint=manufacture")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "HTTP: $HTTP_CODE | 响应: $BODY"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ 制造刷新失败"
+            exit 1
+          fi
+          echo "✅ 今日制造刷新成功"
+
+  summary:
+    name: 📊 汇总
+    runs-on: ubuntu-latest
+    needs: [refresh-map-pwd, refresh-manufacture]
+    if: always()
+    steps:
+      - run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  ✅ 每日定时刷新完成"
+          echo "  📅 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          echo "  🔐 今日密码   — 1 Token"
+          echo "  🏭 今日制造   — 4 Token"
+          echo "  ─────────────────────"
+          echo "  💰 合计: 5 Token"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"

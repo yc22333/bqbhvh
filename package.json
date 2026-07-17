@@ -1,0 +1,9 @@
+{
+  "name": "biqibao-quotation",
+  "version": "5.0.2",
+  "description": "比奇堡报价单",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

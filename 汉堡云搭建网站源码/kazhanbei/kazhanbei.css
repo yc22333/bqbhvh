@@ -1,0 +1,806 @@
+D:\2.搭建的网站\仓库\5.0.2比奇堡报价单\css\zuo\kazhanbei\kazhanbei.css
+/* ============================================================
+   kazhanbei.css — 鼠鼠卡战备主框架样式
+   功能: 卡战备界面的边缘框架和内部框架（与菜单颜色匹配）
+   [CREATED: 2026-06-09]
+   ============================================================ */
+
+/* 隐藏页面滚动条 */
+html {
+  overflow-y: hidden;
+}
+
+body {
+  overflow-y: hidden;
+}
+
+/* ── 选项卡容器（哈夫币优先/枪械优先/容量优先）── */
+.shushukazhanbei-tabs-simple {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── 单个选项卡样式（适配5个方案）── */
+.shushukazhanbei-tab-simple {
+  flex: 1;
+  min-width: 0;
+  height: clamp(44px, 6.5vh, 70px);
+  border-radius: 8px;
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.85rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  color: #d4c07a;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 -1px 0 rgba(255, 215, 100, 0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.shushukazhanbei-tab-simple:hover {
+  background: rgba(91, 192, 222, 0.1);
+  border-color: rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+.shushukazhanbei-tab-simple:active {
+  transform: translateY(1px);
+  background: rgba(91, 192, 222, 0.18);
+}
+
+.shushukazhanbei-tab-simple.active {
+  background: rgba(91, 192, 222, 0.15);
+  border-color: #5BC0DE;
+  color: #5BC0DE;
+  text-shadow: 0 0 6px rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── 隐藏滚动条（通用）── */
+.shushukazhanbei-tabs-simple::-webkit-scrollbar {
+  display: none;
+}
+.shushukazhanbei-tabs-simple {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── 移动端：选项卡横向滚动 ── */
+@media (max-width: 768px) {
+  .shushukazhanbei-tabs-simple {
+    gap: 8px;
+    overflow-x: auto;
+    padding: 6px;
+  }
+  .shushukazhanbei-tab-simple {
+    min-width: 80px;
+    flex: 0 0 auto;
+    height: clamp(45px, 6vh, 65px);
+    font-size: clamp(0.9rem, 3.5vw, 1.3rem);
+    padding: 0 10px;
+  }
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── 卡战备卡片容器 ── */
+.shushukazhanbei-card {
+  width: 100%;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  font-family: "楷体", "KaiTi", "STKaiti", serif;
+}
+
+/* ── 顶部标签栏 ── */
+.shushukazhanbei-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 隐藏滚动条 */
+.shushukazhanbei-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.shushukazhanbei-tabs {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shushukazhanbei-tab {
+  min-width: 0;
+  height: clamp(36px, 8vh, 56px);
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 4vw, 1.8rem);
+  font-weight: bold;
+  color: #f5b82e;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  flex: 1;
+  padding: 0 4px;
+}
+
+.shushukazhanbei-tab:hover {
+  background: rgba(91, 192, 222, 0.12);
+  border-color: rgba(91, 192, 222, 0.4);
+}
+
+.shushukazhanbei-tab.active {
+  background: rgba(245, 215, 66, 0.12);
+  border-color: #F5D742;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+}
+
+.shushukazhanbei-tab.active::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 4px;
+  background: #F5D742;
+  border-radius: 2px;
+}
+
+/* ── 三栏布局：枪械优先 | 均衡套装 | 胸挂优先 同时显示 ── */
+.shushukazhanbei-three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shushukazhanbei-col-card {
+  min-width: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(91, 192, 222, 0.12);
+}
+
+/* 三栏内部：缩小统计数字，适应窄列 */
+.shushukazhanbei-col-card .shushukazhanbei-stat-value {
+  font-size: clamp(13px, 2vw, 20px);
+  overflow: visible;
+  white-space: normal;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+/* 三栏内部：统计盒子可自适应高度 */
+.shushukazhanbei-col-card .shushukazhanbei-stat-box {
+  overflow: visible;
+  height: auto;
+  min-height: clamp(56px, 9vh, 80px);
+  padding: 8px 6px;
+  gap: 4px;
+}
+
+/* 三栏内部：统计标签缩小 */
+.shushukazhanbei-col-card .shushukazhanbei-stat-label {
+  font-size: clamp(11px, 1.8vw, 15px);
+}
+
+/* 三栏内部：缩小图片尺寸，让名称多占空间 */
+.shushukazhanbei-col-card .shushukazhanbei-equipment-img-wrap {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* 三栏内部：名称允许换行，绝不裁剪 */
+.shushukazhanbei-col-card .shushukazhanbei-equip-name {
+  font-size: clamp(12px, 2vw, 16px);
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  word-break: break-all;
+  line-height: 1.3;
+}
+
+/* 三栏内部：价格完整显示，不裁剪 */
+.shushukazhanbei-col-card .shushukazhanbei-equipment-value {
+  width: auto;
+  min-width: clamp(60px, 10vw, 80px);
+  font-size: clamp(13px, 2vw, 18px);
+  overflow: visible;
+  white-space: normal;
+  word-break: break-all;
+  text-align: right;
+}
+
+/* 三栏内部：装备项自适应高度，不裁剪 */
+.shushukazhanbei-col-card .shushukazhanbei-equipment-item {
+  overflow: visible;
+  min-height: clamp(50px, 8vh, 66px);
+  height: auto;
+  padding: 8px 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 三栏内部：装备列表内不裁剪 */
+.shushukazhanbei-col-card .shushukazhanbei-equipment-list {
+  overflow: visible;
+}
+
+@media (max-width: 1000px) {
+  .shushukazhanbei-three-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shushukazhanbei-three-col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ── 主内容容器 ─ */
+.shushukazhanbei-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* ── 5个横向框架容器（可交互） ─ */
+.shushukazhanbei-panels {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+/* ── 单个框架样式（仿 awm-option，保持大尺寸） ── */
+.shushukazhanbei-panel {
+  flex: 1;
+  min-width: 0;
+  height: clamp(50px, 7vh, 80px);
+  border-radius: 8px;
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 3vw, 1.6rem);
+  font-weight: 600;
+  color: #d4c07a;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 -1px 0 rgba(255, 215, 100, 0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.shushukazhanbei-panel:hover {
+  background: rgba(91, 192, 222, 0.1);
+  border-color: rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+.shushukazhanbei-panel:active {
+  transform: translateY(1px);
+  background: rgba(91, 192, 222, 0.18);
+}
+
+.shushukazhanbei-panel.active {
+  background: rgba(91, 192, 222, 0.15);
+  border-color: #5BC0DE;
+  color: #5BC0DE;
+  text-shadow: 0 0 6px rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── 战备详情展示区（背景框架，铺满剩余空间） ── */
+.shushukazhanbei-battle-detail {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  margin-top: 8px;
+  padding: 16px;
+  box-sizing: border-box;
+  display: none;
+  flex-direction: column;
+  animation: battleDetailFadeIn 0.35s ease-out;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@keyframes battleDetailFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 配装方案标题 ─ */
+.shushukazhanbei-build-title {
+  font-size: clamp(18px, 3.5vw, 26px);
+  font-weight: 700;
+  color: #F5D742;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(91, 192, 222, 0.2);
+  text-align: center;
+  letter-spacing: 3px;
+}
+
+/* ── 统计行 ── */
+.shushukazhanbei-stats-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+  width: 100%;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.shushukazhanbei-stat-box {
+  flex: 1;
+  min-width: 0;
+  height: clamp(70px, 12vh, 110px);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(91, 192, 222, 0.12);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 10px;
+}
+
+.shushukazhanbei-stat-label {
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: rgba(91, 192, 222, 0.7);
+  line-height: 1.2;
+  font-weight: 500;
+  text-align: center;
+}
+
+.shushukazhanbei-stat-value {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: bold;
+  color: #F5D742;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.shushukazhanbei-stat-value.profit {
+  color: #4CAF50;
+}
+
+.shushukazhanbei-stat-value.loss {
+  color: #FF5252;
+}
+
+/* ── 装备列表 ── */
+.shushukazhanbei-equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+/* ── 装备项 ── */
+.shushukazhanbei-equipment-item {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-height: clamp(60px, 10vh, 80px);
+  width: 100%;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 0 16px;
+  border: 1px solid rgba(91, 192, 222, 0.12);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+  position: relative;
+  box-sizing: border-box;
+  gap: 14px;
+}
+
+/* ── 物品图片容器 ── */
+.shushukazhanbei-equipment-img-wrap {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.shushukazhanbei-equipment-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── 装备信息区域 ── */
+.shushukazhanbei-equipment-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0;
+  background: none;
+}
+
+/* ── 装备名称 ── */
+.shushukazhanbei-equip-name {
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: #e0e0e0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ─ 装备价值区域 ── */
+.shushukazhanbei-equipment-value {
+  width: clamp(80px, 15vw, 120px);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  background: none;
+}
+
+/* ── 宽屏 PC 优化（1200px以上）── */
+@media (min-width: 1200px) {
+  .shushukazhanbei-container {
+    max-width: 1000px;
+    gap: 20px;
+  }
+  .shushukazhanbei-card {
+    padding: 24px;
+    border-radius: 14px;
+  }
+  .shushukazhanbei-battle-detail {
+    padding: 20px;
+    margin-top: 12px;
+  }
+  .shushukazhanbei-stats-row {
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .shushukazhanbei-stat-box {
+    height: clamp(80px, 14vh, 120px);
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+  .shushukazhanbei-equipment-list {
+    gap: 12px;
+    padding: 8px 0;
+  }
+  .shushukazhanbei-equipment-item {
+    min-height: clamp(65px, 11vh, 85px);
+    padding: 0 20px;
+    gap: 18px;
+    border-radius: 12px;
+  }
+  .shushukazhanbei-equipment-img-wrap {
+    width: 72px;
+    height: 72px;
+  }
+  .shushukazhanbei-equipment-value {
+    width: clamp(90px, 12vw, 130px);
+    padding-right: 8px;
+  }
+  .shushukazhanbei-panels {
+    gap: 16px;
+  }
+  .shushukazhanbei-panel {
+    height: clamp(54px, 7.5vh, 85px);
+  }
+}
+
+.shushukazhanbei-equipment-value {
+  font-size: clamp(16px, 3vw, 22px);
+  font-weight: 600;
+  color: #F5D742;
+}
+
+/* ── 响应式：移动端优化 ── */
+@media (max-width: 768px) {
+  .shushukazhanbei-container {
+    max-width: 100%;
+    padding: 0 8px;
+    gap: 12px;
+  }
+
+  /* 档位按钮 - 允许横向滚动 */
+  .shushukazhanbei-panels {
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .shushukazhanbei-panels::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shushukazhanbei-panel {
+    min-width: 70px;
+    flex: 0 0 auto;
+    height: clamp(45px, 8vh, 65px);
+    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    padding: 0 8px;
+  }
+
+  /* 统计行 - 两行布局 */
+  .shushukazhanbei-stats-row {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .shushukazhanbei-stats-row .shushukazhanbei-stat-box:nth-child(1) {
+    flex: 1 1 100%;
+    height: clamp(60px, 11vh, 85px);
+  }
+
+  .shushukazhanbei-stats-row .shushukazhanbei-stat-box:nth-child(2),
+  .shushukazhanbei-stats-row .shushukazhanbei-stat-box:nth-child(3) {
+    flex: 1 1 calc(50% - 4px);
+    height: clamp(60px, 11vh, 85px);
+  }
+
+  .shushukazhanbei-stat-label {
+    font-size: clamp(12px, 3vw, 15px);
+  }
+
+  .shushukazhanbei-stat-value {
+    font-size: clamp(16px, 4vw, 22px);
+  }
+
+  /* 装备列表 - 紧凑布局 */
+  .shushukazhanbei-equipment-list {
+    gap: 6px;
+  }
+
+  .shushukazhanbei-equipment-item {
+    min-height: clamp(50px, 9vh, 70px);
+    padding: 0 10px;
+    gap: 8px;
+    border-radius: 8px;
+  }
+
+  .shushukazhanbei-equipment-img-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+  }
+
+  .shushukazhanbei-equip-name {
+    font-size: clamp(12px, 3.2vw, 16px);
+  }
+
+  .shushukazhanbei-equipment-value {
+    width: auto;
+    font-size: clamp(14px, 3.5vw, 18px);
+    padding-right: 0;
+  }
+
+  .shushukazhanbei-build-title {
+    font-size: clamp(16px, 4vw, 22px);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .shushukazhanbei-battle-detail {
+    padding: 10px;
+    margin-top: 6px;
+  }
+}
+
+/* ─ 响应式：小屏手机进一步优化 ── */
+@media (max-width: 480px) {
+  .shushukazhanbei-panel {
+    min-width: 60px;
+    height: clamp(40px, 7vh, 55px);
+    font-size: clamp(0.8rem, 3.8vw, 1.1rem);
+  }
+
+  .shushukazhanbei-equipment-item {
+    min-height: clamp(45px, 8vh, 60px);
+    padding: 0 8px;
+    gap: 6px;
+  }
+
+  .shushukazhanbei-equipment-img-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .shushukazhanbei-equip-name {
+    font-size: clamp(11px, 3vw, 14px);
+  }
+
+  .shushukazhanbei-equipment-value {
+    font-size: clamp(13px, 3.2vw, 16px);
+  }
+
+  .shushukazhanbei-stat-box {
+    padding: 8px 6px;
+    gap: 4px;
+  }
+}
+
+/* ── 主武器样式 ── */
+.shushukazhanbei-equipment-item.main-weapon {
+  /* 样式同普通装备项 */
+}
+
+
+
+/* ── 紫色品质样式 ── */
+.shushukazhanbei-equipment-item.purple {
+  background: rgba(138, 43, 226, 0.10);
+  border-color: rgba(138, 43, 226, 0.30);
+}
+
+.shushukazhanbei-equipment-item.purple::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #8A2BE2;
+  border-radius: 2px 0 0 2px;
+}
+
+/* ── 蓝色品质样式 ── */
+.shushukazhanbei-equipment-item.blue {
+  background: rgba(30, 144, 255, 0.10);
+  border-color: rgba(30, 144, 255, 0.30);
+}
+
+.shushukazhanbei-equipment-item.blue::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #1E90FF;
+  border-radius: 2px 0 0 2px;
+}
+
+/* ── 加载提示 ── */
+.shushukazhanbei-loading {
+  text-align: center;
+  padding: 40px;
+  color: rgba(91, 192, 222, 0.6);
+  font-size: 16px;
+}
+
+.shushukazhanbei-loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  border: 2px solid rgba(91, 192, 222, 0.3);
+  border-top-color: #5BC0DE;
+  border-radius: 50%;
+  animation: battleSpin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes battleSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 空数据提示 ── */
+.shushukazhanbei-empty-state {
+  text-align: center;
+  padding: 60px 40px;
+  color: rgba(91, 192, 222, 0.5);
+  font-size: 18px;
+  letter-spacing: 2px;
+}

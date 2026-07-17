@@ -1,0 +1,344 @@
+/* ============================================================
+   zanzhu.css — 首页完整样式
+   1:1 复刻截图效果
+   ============================================================ */
+
+/* 给所有内容应用预设字体（强制继承） */
+.shouye-hero, .shouye-hero-content, .shouye-card, .shouye-btn, .thank-card, .server-card, .lunbo-card, .shouye-title, .shouye-col, .server-name, .bar-label {
+  font-family: "楷体", "KaiTi", "STKaiti", serif !important;
+  /* 文字阴影 */
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 第一行容器 */
+.shouye-row-1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* 通用卡片样式 */
+.shouye-card {
+  border-radius: 12px;
+  border: none;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 16px;
+  /* 浮雕阴影 */
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* 第1框：感谢区 */
+.thank-card {
+  flex: 0.8;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  color: #fff;
+  font-size: 13px;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.thank-card > div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.id-zyg  { color: #5BC0DE; }
+.id-hmbb { color: #F5D742; }
+.id-pdx  { color: #FF6B9D; }
+.id-xlb  { color: #FF6B9D; }
+
+/* 中间列容器 */
+.shouye-col {
+  flex: 0.7;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 第2、3框：独立按钮卡片 */
+.btn-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.shouye-btn {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shouye-btn-text {
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* 加入微信群按钮可点击 */
+#weixinBtn {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#weixinBtn:hover {
+  background: rgba(255, 107, 157, 0.2);
+}
+
+/* 鼠鼠聚集地按钮可点击 */
+#kookBtn {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#kookBtn:hover {
+  background: rgba(255, 107, 157, 0.2);
+}
+
+/* 微信弹窗 */
+.weixin-modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.weixin-modal-content {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 16px;
+  border: 2px solid rgba(91, 192, 222, 0.4);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.weixin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(91, 192, 222, 0.3);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.weixin-modal-close {
+  font-size: 24px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s;
+}
+
+.weixin-modal-close:hover {
+  color: #FF6B9D;
+}
+
+.weixin-modal-body {
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.weixin-img {
+  max-width: 240px;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 107, 157, 0.4);
+}
+
+/* 第3框：服务器状态 */
+.server-card {
+  flex: 1.5;
+  min-width: 280px;
+}
+
+/* 服务器状态卡片 */
+.server-content {
+  display: flex;
+  gap: 12px;
+  height: 100%;
+  align-items: center;
+}
+
+.server-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  justify-content: center;
+}
+
+.server-name {
+  color: #fff;
+  font-size: 14px;
+}
+
+/* 每个状态的独特醒目颜色 */
+.server-name.status-online { color: #00E5FF; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); } /* 亮青色 */
+.server-name.status-idle { color: #B0BEC5; text-shadow: 0 0 6px rgba(176, 190, 197, 0.5); } /* 亮灰色 */
+.server-name.status-maintenance { color: #FFEB3B; text-shadow: 0 0 8px rgba(255, 235, 59, 0.7); } /* 亮黄色 */
+.server-name.status-busy { color: #FF4081; text-shadow: 0 0 8px rgba(255, 64, 129, 0.6); } /* 亮粉色 */
+.server-name.status-lazy { color: #8D6E63; text-shadow: 0 0 6px rgba(141, 110, 99, 0.5); } /* 棕色 */
+.server-name.status-mysterious { color: #E040FB; text-shadow: 0 0 8px rgba(224, 64, 251, 0.6); } /* 亮紫色 */
+.server-name.status-patrick { color: #FF5722; text-shadow: 0 0 8px rgba(255, 87, 34, 0.6); } /* 橙色 */
+.server-name.status-sponge { color: #FFC107; text-shadow: 0 0 8px rgba(255, 193, 7, 0.7); } /* 金色 */
+.server-name.status-plankton { color: #66BB6A; text-shadow: 0 0 8px rgba(102, 187, 106, 0.6); } /* 亮绿色 */
+.server-name.status-crab { color: #FF7043; text-shadow: 0 0 8px rgba(255, 112, 67, 0.6); } /* 橙红色 */
+
+/* 轮播卡片 */
+.lunbo-card {
+  flex: 1;
+  min-width: 180px;
+  min-height: 120px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lunbo-carousel {
+  width: 100%;
+  min-height: 120px;
+  position: relative;
+}
+
+.lunbo-item {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 26px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+  text-align: center;
+}
+
+.lunbo-item.active {
+  opacity: 1 !important;
+  transform: translateY(0);
+}
+
+.server-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: url('photo/biqibao/zhangyuge.jpg') center/cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.server-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.server-name {
+  color: #fff;
+  font-size: 14px;
+}
+
+.server-star {
+  font-size: 18px;
+}
+
+.server-ad {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+}
+
+.server-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-label {
+  width: 50px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  width: 60%;
+}
+
+.bar-fill.red    { background: linear-gradient(90deg, #FF6B9D, #FF4444); }
+.bar-fill.blue   { background: linear-gradient(90deg, #5BC0DE, #2196F3); }
+.bar-fill.purple { background: linear-gradient(90deg, #9C27B0, #E040FB); }
+
+/* ========== 响应式换行 ========== */
+/* 中等屏幕：小于 1200px */
+@media (max-width: 1200px) {
+  .thank-card, .shouye-col, .server-card, .lunbo-card {
+    flex: 1 1 45%;
+  }
+}
+
+/* 小屏幕：小于 768px */
+@media (max-width: 768px) {
+  .thank-card, .shouye-col, .server-card, .lunbo-card {
+    flex: 1 1 100%;
+  }
+
+  .shouye-row-1 {
+    gap: 12px;
+  }
+}

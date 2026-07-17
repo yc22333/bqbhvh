@@ -1,0 +1,80 @@
+# 比奇堡报价单 · 虚拟主机路由配置
+
+# ── PHP 设置（如果服务器允许覆盖）──
+php_flag display_errors Off
+php_flag log_errors On
+php_value error_reporting E_ALL & ~E_NOTICE & ~E_WARNING
+
+# ── 默认首页 ──
+DirectoryIndex index.html index.php
+
+# ── UTF-8 编码 ──
+AddDefaultCharset UTF-8
+AddType text/html;charset=utf-8 html
+AddType application/json;charset=utf-8 php
+
+# ── 关闭目录列表（防止泄露文件结构）──
+Options -Indexes -MultiViews
+
+# ── 启用 URL 重写引擎 ──
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 阻止访问隐藏文件（.开头的文件）
+    RewriteRule (^\.|/\.) - [F,L]
+
+    # 防止直接访问 .sqlite 数据库文件
+    RewriteRule \.(sqlite|db)$ - [F,L]
+
+    # 允许直接访问存在的文件和目录
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 如果请求的是 /api/xxx 但文件不存在，尝试匹配 api/xxx.php
+    RewriteRule ^api/([a-zA-Z0-9_-]+)/?$ api/$1.php [L]
+
+    # 其他请求返回 index.html（SPA 单页应用）
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# ── 如果 mod_rewrite 不可用，用更简单的方式 ──
+<IfModule !mod_rewrite.c>
+    # 禁用目录列表
+    Options -Indexes
+</IfModule>
+
+# ── MIME 类型 ──
+<IfModule mod_mime.c>
+    AddType audio/mpeg .mp3
+    AddType image/jpeg .jpg .jpeg
+    AddType image/webp .webp
+    AddType text/css .css
+    AddType application/javascript .js
+</IfModule>
+
+# ── 缓存设置 ──
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType audio/mpeg "access plus 30 days"
+</IfModule>
+
+# ── CORS 跨域支持（前端 fetch 需要）──
+<IfModule mod_headers.c>
+    <FilesMatch "\.(php)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+    </FilesMatch>
+</IfModule>
+
+# ── OPTIONS 预检请求处理（一些旧 Apache 版本需要）──
+<Limit OPTIONS>
+    Allow from all
+</Limit>
