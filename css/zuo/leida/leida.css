@@ -1,7 +1,6 @@
 /* ============================================================
-   leida.css — 雷达（英雄区）样式
-   功能: 雷达页面样式，含选项卡切换 + iframe 内嵌网页
-   依赖: 无（可独立加载）
+   leida.css — 雷达页面样式
+   功能: 服务器卡片展示样式
    [CREATED: 2026-09-15]
    ============================================================ */
 
@@ -76,7 +75,7 @@
 /* ── 雷达内容容器 ── */
 .leida-main-frame {
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -94,211 +93,130 @@
   padding: 0 8px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex: 1;
   min-height: 0;
 }
 
-/* ── 工具栏：选项卡按钮 ── */
-.leida-toolbar {
+/* ── 服务器列表 ── */
+.leida-server-list {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  margin-bottom: 8px;
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0;
 }
 
-.leida-tabs {
-  display: flex;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 4px;
-}
-
-.leida-tab {
-  padding: 10px 28px;
-  font-size: 15px;
-  font-weight: 600;
-  color: rgba(245, 184, 46, 0.6);
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-family: inherit;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.leida-tab:hover {
-  color: #f5b82e;
-  background: rgba(245, 184, 46, 0.08);
-}
-
-.leida-tab.active {
-  color: #f5b82e;
-  background: rgba(245, 184, 46, 0.15);
-  box-shadow: 0 2px 8px rgba(245, 184, 46, 0.15);
-}
-
-/* ── 信息栏：显示当前 URL + 直接打开按钮 ── */
-.leida-info-bar {
+/* ── 服务器卡片 ── */
+.leida-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 8px 14px;
-  margin-bottom: 8px;
-  flex-shrink: 0;
-  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 20px;
+  background: rgba(245, 184, 46, 0.06);
+  border: 1px solid rgba(245, 184, 46, 0.15);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
-.leida-info-url {
-  font-size: 13px;
-  color: rgba(232, 213, 163, 0.7);
-  font-family: "Consolas", "Courier New", monospace;
-  word-break: break-all;
+.leida-card:hover {
+  background: rgba(245, 184, 46, 0.12);
+  border-color: rgba(245, 184, 46, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.leida-card:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ── 卡片图标 ── */
+.leida-card-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(245, 184, 46, 0.1);
+  border-radius: 12px;
+}
+
+/* ── 卡片信息区 ── */
+.leida-card-info {
   flex: 1;
   min-width: 0;
 }
 
-.leida-open-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #2ecc71;
-  background: rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.25);
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-family: inherit;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.leida-open-btn:hover {
-  background: rgba(46, 204, 113, 0.2);
-  border-color: rgba(46, 204, 113, 0.5);
-  transform: translateY(-1px);
-  color: #2ecc71;
-}
-
-.leida-open-btn:active {
-  transform: translateY(0);
-}
-
-/* ── iframe 容器 ── */
-.leida-iframe-wrapper {
-  flex: 1;
-  min-height: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(245, 184, 46, 0.12);
-  position: relative;
-}
-
-.leida-iframe {
-  width: 100%;
-  height: 100%;
-  min-height: 55vh;
-  display: block;
-  border: none;
-}
-
-/* ── iframe 被拦截时的 fallback ── */
-.leida-iframe-fallback {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.75);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  padding: 20px;
-  text-align: center;
-}
-
-.leida-iframe-fallback.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.leida-fallback-icon {
-  font-size: 36px;
-  opacity: 0.8;
-}
-
-.leida-fallback-text {
-  font-size: 14px;
-  color: rgba(232, 213, 163, 0.8);
-  max-width: 400px;
-  line-height: 1.6;
-}
-
-.leida-fallback-btn {
-  display: inline-block;
-  padding: 10px 28px;
-  font-size: 15px;
-  font-weight: 600;
+.leida-card-name {
+  font-size: 18px;
+  font-weight: 700;
   color: #f5b82e;
-  background: rgba(245, 184, 46, 0.12);
-  border: 1px solid rgba(245, 184, 46, 0.3);
-  border-radius: 8px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-family: inherit;
-  margin-top: 4px;
+  margin-bottom: 3px;
 }
 
-.leida-fallback-btn:hover {
-  background: rgba(245, 184, 46, 0.2);
-  border-color: rgba(245, 184, 46, 0.5);
-  transform: translateY(-2px);
-  color: #fcd34d;
+.leida-card-desc {
+  font-size: 13px;
+  color: rgba(232, 213, 163, 0.6);
+  margin-bottom: 4px;
 }
 
-/* ── 页脚 ── */
-.leida-footer {
-  text-align: center;
-  padding: 14px;
-  color: rgba(245, 184, 46, 0.3);
+.leida-card-url {
   font-size: 12px;
+  color: rgba(232, 213, 163, 0.4);
+  font-family: "Consolas", "Courier New", monospace;
+  word-break: break-all;
+}
+
+/* ── 箭头 ── */
+.leida-card-arrow {
+  font-size: 1.4rem;
+  color: rgba(245, 184, 46, 0.3);
   flex-shrink: 0;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.leida-card:hover .leida-card-arrow {
+  transform: translateX(4px);
+  color: #f5b82e;
+}
+
+/* ── 提示文字 ── */
+.leida-tip {
+  font-size: 12px;
+  color: rgba(232, 213, 163, 0.35);
+  text-align: center;
+  margin-top: 6px;
 }
 
 /* ── 响应式适配 ── */
-@media (max-width: 768px) {
-  .leida-tab {
-    padding: 8px 16px;
-    font-size: 14px;
+@media (max-width: 600px) {
+  .leida-card {
+    padding: 14px 16px;
+    gap: 12px;
   }
 
-  .leida-iframe {
-    min-height: 50vh;
-  }
-}
-
-@media (max-width: 480px) {
-  .leida-tab {
-    padding: 6px 12px;
-    font-size: 13px;
+  .leida-card-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.8rem;
   }
 
-  .leida-iframe {
-    min-height: 40vh;
+  .leida-card-name {
+    font-size: 16px;
+  }
+
+  .leida-card-desc {
+    font-size: 12px;
+  }
+
+  .leida-card-url {
+    font-size: 11px;
   }
 }
