@@ -1,0 +1,58 @@
+/* ============================================================
+   ditu.css — 三角洲地图工具
+   ============================================================ */
+
+/* 第四行：地图工具 */
+.shouye-row-4 {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* 地图容器 */
+.ditu-container {
+  width: 100%;
+  min-height: 120px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 2px solid rgba(91, 192, 222, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 地图iframe */
+.ditu-iframe {
+  width: 100%;
+  min-height: 600px;
+  border: none;
+  overflow: hidden; /* 隐藏滚动条 */
+  scrolling: no; /* 旧浏览器兼容 */
+}
+
+/* 地图按钮 */
+.ditu-btn {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.ditu-btn:hover {
+  background: rgba(91, 192, 222, 0.15);
+}
+
+/* 按钮文字 */
+.ditu-btn-text {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}

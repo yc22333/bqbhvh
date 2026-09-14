@@ -1,0 +1,15 @@
+{
+  "name": "biqibao-quotation",
+  "version": "5.0.2",
+  "description": "比奇堡报价单 - 汉堡云服务器版",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "better-sqlite3": "^11.0.0",
+    "cors": "^2.8.5"
+  }
+}

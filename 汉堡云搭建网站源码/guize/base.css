@@ -1,0 +1,743 @@
+/* ============================================================
+   base.css — 比奇堡报价单 · 全局样式基石 [FINAL READ-ONLY VERSION]
+   设计理念：
+   • 所有属性通过 CSS 变量暴露，任意可自定义
+   • 大小/高度/宽度/角度/边缘/粗细/px/位移/颜色全支持
+   • 完全开放色彩空间 (255×255×255)
+   • 本文件最终化，后续不再修改，只读不写
+   ============================================================ */
+
+/* ========== @font-face 自定义字体（暂缺字体文件） ========== */
+/* @font-face {
+  font-family: "FZSE-GBK";
+  src: url("../ziti/fzse_gbk.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+} */
+
+/* ── 全局禁止文字选中/复制 ── */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ========== CSS 变量全系统：所有属性可通过变量自定义 ========== */
+:root {
+  /* ------------------------------------------------------------
+     边栏系统 — 自适应视口宽度
+     ------------------------------------------------------------ */
+  --sidebar-w: clamp(160px, 15vw, 240px);
+
+  /* ------------------------------------------------------------
+     COLOR SYSTEM — 完整色彩空间开放
+     ------------------------------------------------------------ */
+  /* 三色主题色（可被任意覆盖） */
+  --color-primary:       91,  192, 222; /* 章鱼哥蓝 #5BC0DE */
+  --color-secondary:     245, 215,  66; /* 海绵宝宝黄 #F5D742 */
+  --color-accent:        255, 107, 157; /* 派大星粉 #FF6B9D */
+
+  /* 直接色值 */
+  --color-primary-hex:   rgb(var(--color-primary));
+  --color-secondary-hex: rgb(var(--color-secondary));
+  --color-accent-hex:    rgb(var(--color-accent));
+
+  /* 衍生色：深浅变体，仍可自定义 */
+  --color-primary-light:   rgb(calc(var(--color-primary-r) + 40), calc(var(--color-primary-g) + 40), calc(var(--color-primary-b) + 40));
+  --color-primary-dark:    rgb(calc(var(--color-primary-r) - 30), calc(var(--color-primary-g) - 30), calc(var(--color-primary-b) - 30));
+  --color-secondary-light: rgb(calc(var(--color-secondary-r) + 35), calc(var(--color-secondary-g) + 35), calc(var(--color-secondary-b) + 35));
+  --color-secondary-dark:  rgb(calc(var(--color-secondary-r) - 30), calc(var(--color-secondary-g) - 30), calc(var(--color-secondary-b) - 30));
+  --color-accent-light:    rgb(calc(var(--color-accent-r) + 35), calc(var(--color-accent-g) + 35), calc(var(--color-accent-b) + 35));
+  --color-accent-dark:      rgb(calc(var(--color-accent-r) - 30), calc(var(--color-accent-g) - 30), calc(var(--color-accent-b) - 30));
+
+  /* 拆解 RGB 分量（用于透明混合计算） */
+  --color-primary-r:        91;
+  --color-primary-g:       192;
+  --color-primary-b:       222;
+  --color-secondary-r:     245;
+  --color-secondary-g:     215;
+  --color-secondary-b:      66;
+  --color-accent-r:        255;
+  --color-accent-g:        107;
+  --color-accent-b:        157;
+
+  /* 中性色色阶 */
+  --color-white:           #FFFFFF;
+  --color-gray-50:         #F9FAFB;
+  --color-gray-100:        #F5F7FA;
+  --color-gray-200:        #E8ECF1;
+  --color-gray-300:        #C8D0D8;
+  --color-gray-400:        #9AA4AF;
+  --color-gray-500:        #6B7A8D;
+  --color-gray-600:        #4A5564;
+  --color-gray-700:        #3A4452;
+  --color-gray-800:        #2A303C;
+  --color-gray-900:        #1A1F26;
+  --color-black:           #000000;
+
+  /* 语义映射（锚定到主题） */
+  --color-bg-page:                 var(--color-primary-hex);
+  --color-bg-page-secondary:       var(--color-primary-light);
+  --color-bg-container:            var(--color-white);
+  --color-bg-card:                 var(--color-gray-100);
+  --color-text-body:               var(--color-gray-900);
+  --color-text-secondary:          var(--color-gray-700);
+  --color-text-muted:              var(--color-gray-500);
+  --color-text-inverse:            var(--color-white);
+  --color-border-default:          var(--color-gray-200);
+  --color-border-highlight:        var(--color-accent-hex);
+  --color-border-warning:          var(--color-secondary-dark);
+  --color-shadow:                  rgba(0, 0, 0, 0.06);
+  --color-shadow-elevated:         rgba(0, 0, 0, 0.04);
+  --color-shadow-btn-primary:      rgba(var(--color-accent-r), var(--color-accent-g), var(--color-accent-b), 0.35);
+  --color-shadow-btn-secondary:    rgba(var(--color-secondary-r), var(--color-secondary-g), var(--color-secondary-b), 0.35);
+  --color-shadow-accent:           rgba(var(--color-accent-r), var(--color-accent-g), var(--color-accent-b), 0.12);
+  --color-bg-warning:              var(--color-secondary-light);
+  --color-text-warning:            var(--color-secondary-dark);
+  --color-bg-info:                 var(--color-primary-light);
+  --color-text-info:               var(--color-primary-dark);
+
+  /* 按钮颜色体系 */
+  --btn-primary-bg:                var(--color-accent-hex);
+  --btn-primary-bg-hover:          var(--color-accent-dark);
+  --btn-primary-text:              var(--color-white);
+  --btn-primary-shadow:            var(--color-shadow-btn-primary);
+  --btn-secondary-bg:              var(--color-secondary-hex);
+  --btn-secondary-bg-hover:        var(--color-secondary-dark);
+  --btn-secondary-text:            var(--color-gray-900);
+  --btn-secondary-shadow:          var(--color-shadow-btn-secondary);
+  --btn-outline-text:              var(--color-accent-hex);
+  --btn-outline-text-hover:        var(--color-white);
+  --btn-outline-border:            var(--color-accent-hex);
+  --btn-outline-bg-hover:          var(--color-accent-hex);
+  --btn-focus-outline:             var(--color-accent-hex);
+
+  /* 渐变与叠加透明色 */
+  --overlay-alpha-10:  rgba(0, 0, 0, 0.1);
+  --overlay-alpha-20:  rgba(0, 0, 0, 0.2);
+  --overlay-alpha-50:  rgba(0, 0, 0, 0.5);
+
+  /* ------------------------------------------------------------
+     DIMENSIONS & SPACING — 全维度尺寸变量
+     ------------------------------------------------------------ */
+  /* 容器 */
+  --container-max-width:          1200px;
+  --container-margin-y:           24px;
+  --container-padding-x:          24px;
+  --container-padding-y:          24px;
+  --container-border-width:       0px;
+  --container-border-color:       transparent;
+  --container-border-radius:      12px;
+  --container-box-shadow-1:       0 2px 8px var(--color-shadow);
+  --container-box-shadow-2:       0 8px 24px var(--color-shadow-elevated);
+  --container-left-border-width:  4px;
+  --container-left-border-color:  var(--color-accent-hex);
+  --container-transform-translate: 0 0;
+
+  /* 卡片 */
+  --card-padding:                 20px;
+  --card-margin-bottom:           16px;
+  --card-border-width:            1px;
+  --card-border-color:            var(--color-border-default);
+  --card-border-radius:            8px;
+  --card-left-border-width:        0px;
+  --card-left-border-color:        transparent;
+  --card-bg:                      var(--color-bg-card);
+  --card-hover-border-color:      var(--color-border-highlight);
+  --card-hover-box-shadow:        0 4px 12px var(--color-shadow-accent);
+  --card-transform-translate:     0 0;
+
+  /* 边框圆角（层级化） */
+  --radius-xs:      2px;
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-lg:      8px;
+  --radius-xl:     12px;
+  --radius-2xl:    16px;
+  --radius-full:  9999px;
+
+  /* 边框粗细 */
+  --border-thin:    1px;
+  --border-base:    2px;
+  --border-thick:   3px;
+  --border-thicker: 4px;
+  --border-xthick:  6px;
+
+  /* 外边距体系 */
+  --spacing-0:       0px;
+  --spacing-1:       4px;
+  --spacing-2:       8px;
+  --spacing-3:      12px;
+  --spacing-4:      16px;
+  --spacing-5:      20px;
+  --spacing-6:      24px;
+  --spacing-8:      32px;
+  --spacing-10:     40px;
+  --spacing-12:     48px;
+  --spacing-16:     64px;
+
+  /* ------------------------------------------------------------
+     TYPOGRAPHY — 字体与行高变量
+     ------------------------------------------------------------ */
+  /* 字体族 */
+  --font-family-base: "FZSE-GBK", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-heading:     var(--font-family-base);
+  --font-body:        var(--font-family-base);
+
+  /* 字号阶梯 */
+  --text-xs:      0.75rem;  /* 12px */
+  --text-sm:      0.85rem; /* 13.6px */
+  --text-base:    0.95rem; /* 15.2px */
+  --text-medium:  1rem;    /* 16px */
+  --text-lg:      1.1rem;  /* 17.6px */
+  --text-xl:      1.25rem; /* 20px */
+  --text-2xl:     1.5rem;  /* 24px */
+  --text-3xl:     1.75rem; /* 28px */
+  --text-4xl:     2rem;    /* 32px */
+
+  /* 字重 */
+  --font-light:    300;
+  --font-normal:   400;
+  --font-medium:   500;
+  --font-semibold: 600;
+  --font-bold:     700;
+
+  /* 行高 */
+  --leading-tight:  1.25;
+  --leading-base:   1.5;
+  --leading-relax:  1.6;
+  --leading-loose:  1.75;
+
+  /* ------------------------------------------------------------
+     BUTTONS — 按钮尺寸与样式变量
+     ------------------------------------------------------------ */
+  --btn-height-base:    44px;
+  --btn-padding-y:      10px;
+  --btn-padding-x:      24px;
+  --btn-padding-y-sm:    6px;
+  --btn-padding-x-sm:   16px;
+  --btn-font-size:     0.95rem;
+  --btn-font-size-sm:  0.85rem;
+  --btn-border-radius:  var(--radius-lg);
+  --btn-border-width:     0px;
+  --btn-gap:             8px;
+  --btn-transition-transform: transform 0.15s;
+  --btn-active-scale:    0.97;
+
+  /* ------------------------------------------------------------
+     SHADOWS — 阴影层级变量
+     ------------------------------------------------------------ */
+  --shadow-xs:    0 1px 2px  rgba(0, 0, 0, 0.05);
+  --shadow-sm:    0 2px 4px  rgba(0, 0, 0, 0.08);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-xl:   0 16px 48px rgba(0, 0, 0, 0.20);
+
+  /* ------------------------------------------------------------
+     TRANSITION — 动画速度
+     ------------------------------------------------------------ */
+  --transition-fast:    0.15s;
+  --transition-base:    0.25s;
+  --transition-slow:    0.4s;
+  --transition-easing:  ease;
+
+  /* ------------------------------------------------------------
+     SPECIAL COMPONENTS — 特殊组件变量
+     ------------------------------------------------------------ */
+  /* 价格高亮框 */
+  --price-highlight-font-size:   1.5rem;
+  --price-highlight-font-weight: var(--font-bold);
+  --price-highlight-bg:          var(--color-secondary-hex);
+  --price-highlight-text:        var(--color-gray-900);
+  --price-highlight-padding-y:    4px;
+  --price-highlight-padding-x:   14px;
+  --price-highlight-border-radius: 6px;
+  --price-highlight-shadow-spread: 3px;
+  --price-highlight-shadow-color:  var(--color-accent-hex);
+
+  /* 警告框 */
+  --alert-padding-y: 14px;
+  --alert-padding-x: 18px;
+  --alert-border-radius: var(--radius-lg);
+  --alert-border-left-width: 4px;
+  --alert-margin-bottom: 16px;
+  --alert-font-size:  0.95rem;
+  --alert-warning-bg:  var(--color-bg-warning);
+  --alert-warning-text:var(--color-text-warning);
+  --alert-warning-border:var(--color-secondary-hex);
+  --alert-info-bg:     var(--color-bg-info);
+  --alert-info-text:   var(--color-text-info);
+  --alert-info-border: var(--color-primary-hex);
+
+  /* 框架标题左侧装饰条 */
+  --title-decoration-width:  4px;
+  --title-decoration-height: 20px;
+  --title-decoration-left:   0px;
+  --title-decoration-color:  var(--color-secondary-hex);
+  --title-padding-left:      14px;
+  --title-margin-bottom:      0px;
+
+  /* 框架头部底部分隔线 */
+  --header-border-bottom-width: 2px;
+  --header-border-bottom-color: var(--color-primary-light);
+  --header-padding-bottom: 16px;
+  --header-margin-bottom:   20px;
+
+  /* Flex 间距 */
+  --flex-gap: 12px;
+
+  /* ------------------------------------------------------------
+     RESPONSIVE — 响应式断点
+     ------------------------------------------------------------ */
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+
+
+  /* ==========================================================
+     首页三色别名体系 — 章鱼哥蓝 / 派大星粉 / 海绵宝宝黄
+     ── 三色分工 ──
+     🔵 章鱼哥蓝 (primary)    → 按钮界面 / 交互控件
+     🩷 派大星粉  (accent)     → 标题文字 / 重要强调
+     🟡 海绵宝宝黄 (secondary) → 装饰 / 渐变 / 框架点缀
+     ========================================================== */
+
+  /* 章鱼哥蓝 — 按钮主色系 */
+  --sy-primary:            var(--color-primary-hex);
+  --sy-primary-light:      var(--color-primary-light);
+  --sy-primary-dark:       var(--color-primary-dark);
+  --sy-primary-alpha-10:  rgba(91, 192, 222, 0.10);
+  --sy-primary-alpha-20:  rgba(91, 192, 222, 0.20);
+
+  /* 派大星粉 — 标题主色系 */
+  --sy-accent:             var(--color-accent-hex);
+  --sy-accent-light:       var(--color-accent-light);
+  --sy-accent-dark:        var(--color-accent-dark);
+  --sy-accent-alpha-15:   rgba(255, 107, 157, 0.15);
+  --sy-accent-alpha-30:   rgba(255, 107, 157, 0.30);
+
+  /* 海绵宝宝黄 — 装饰主色系 */
+  --sy-secondary:          var(--color-secondary-hex);
+  --sy-secondary-light:    var(--color-secondary-light);
+  --sy-secondary-dark:     var(--color-secondary-dark);
+  --sy-secondary-alpha-20: rgba(245, 215, 66, 0.20);
+  --sy-secondary-alpha-40: rgba(245, 215, 66, 0.40);
+
+  /* 框架布局变量 */
+  --sy-frame-padding-y:    var(--spacing-5);
+  --sy-frame-padding-x:    var(--spacing-6);
+  --sy-frame-gap:          var(--spacing-5);
+  --sy-frame-min-width:    320px;
+  --sy-frame-height:       auto;
+}
+
+/* ========== 全局重置 ========== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--text-base-font-size, 16px);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg-page);
+  color: var(--color-text-body);
+  line-height: var(--leading-relax);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== 排版 ========== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  color: var(--color-text-body);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-medium); }
+
+p {
+  color: var(--color-text-secondary);
+}
+
+a {
+  color: var(--color-accent-hex);
+  text-decoration: none;
+  transition: color var(--transition-base) var(--transition-easing);
+}
+a:hover {
+  color: var(--color-accent-dark);
+}
+
+/* ========== 大框架（顶层容器） ========== */
+.frame {
+  max-width: var(--container-max-width);
+  margin: var(--container-margin-y) auto;
+  padding: var(--container-padding-y) var(--container-padding-x);
+  background: var(--color-bg-container);
+  border-radius: var(--container-border-radius);
+  border: var(--container-border-width) solid var(--container-border-color);
+  border-left: var(--container-left-border-width) solid var(--container-left-border-color);
+  box-shadow: var(--container-box-shadow-1), var(--container-box-shadow-2);
+}
+
+.frame--primary {
+  --container-left-border-color: var(--color-bg-page);
+}
+
+.frame--highlight {
+  --container-left-border-color: var(--color-secondary-hex);
+}
+
+.frame__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--header-margin-bottom);
+  padding-bottom: var(--header-padding-bottom);
+  border-bottom: var(--header-border-bottom-width) solid var(--header-border-bottom-color);
+}
+
+.frame__title {
+  font-size: var(--text-xl);
+  color: var(--color-text-body);
+  position: relative;
+  padding-left: var(--title-padding-left);
+  margin-bottom: var(--title-margin-bottom);
+}
+.frame__title::before {
+  content: "";
+  position: absolute;
+  left: var(--title-decoration-left);
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--title-decoration-width);
+  height: var(--title-decoration-height);
+  background: var(--title-decoration-color);
+  border-radius: var(--radius-xs);
+}
+
+/* ========== 小框架（嵌套卡片） ========== */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  margin-bottom: var(--card-margin-bottom);
+  border: var(--card-border-width) solid var(--card-border-color);
+  border-left: var(--card-left-border-width) solid var(--card-left-border-color);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+}
+.card:hover {
+  border-color: var(--card-hover-border-color);
+  box-shadow: var(--card-hover-box-shadow);
+}
+
+.card--accent {
+  --card-left-border-width: var(--border-thick);
+  --card-left-border-color: var(--color-accent-hex);
+}
+.card--warning {
+  --card-left-border-width: var(--border-thick);
+  --card-left-border-color: var(--color-secondary-dark);
+  --card-bg: var(--color-bg-warning);
+}
+
+.card__title {
+  font-size: var(--text-medium);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--spacing-3);
+  color: var(--color-text-body);
+}
+
+.card__body {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+/* ========== 按钮体系 ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--btn-font-size);
+  font-weight: var(--font-medium);
+  border: var(--btn-border-width) solid transparent;
+  border-radius: var(--btn-border-radius);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    box-shadow var(--transition-base),
+    var(--btn-transition-transform);
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(var(--btn-active-scale));
+}
+.btn:focus-visible {
+  outline: var(--border-base) solid var(--btn-focus-outline);
+  outline-offset: var(--spacing-1);
+}
+
+.btn--primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.btn--primary:hover {
+  background: var(--btn-primary-bg-hover);
+  box-shadow: 0 4px 14px var(--btn-primary-shadow);
+}
+
+.btn--secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+}
+.btn--secondary:hover {
+  background: var(--btn-secondary-bg-hover);
+  box-shadow: 0 4px 14px var(--btn-secondary-shadow);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--btn-outline-text);
+  border: var(--border-base) solid var(--btn-outline-border);
+}
+.btn--outline:hover {
+  background: var(--btn-outline-bg-hover);
+  color: var(--btn-outline-text-hover);
+}
+
+.btn--sm {
+  padding: var(--btn-padding-y-sm) var(--btn-padding-x-sm);
+  font-size: var(--btn-font-size-sm);
+}
+
+/* ========== 价格/金额高亮区域 ========== */
+.price-highlight {
+  display: inline-block;
+  font-size: var(--price-highlight-font-size);
+  font-weight: var(--price-highlight-font-weight);
+  color: var(--price-highlight-text);
+  background: var(--price-highlight-bg);
+  padding: var(--price-highlight-padding-y) var(--price-highlight-padding-x);
+  border-radius: var(--price-highlight-border-radius);
+  box-shadow: 0 0 0 var(--price-highlight-shadow-spread) var(--price-highlight-shadow-color);
+}
+
+/* ========== 警告/提示区域 ========== */
+.alert {
+  padding: var(--alert-padding-y) var(--alert-padding-x);
+  border-radius: var(--alert-border-radius);
+  font-size: var(--alert-font-size);
+  margin-bottom: var(--alert-margin-bottom);
+}
+
+.alert--warning {
+  background: var(--alert-warning-bg);
+  color: var(--alert-warning-text);
+  border-left: var(--alert-border-left-width) solid var(--alert-warning-border);
+}
+
+.alert--info {
+  background: var(--alert-info-bg);
+  color: var(--alert-info-text);
+  border-left: var(--alert-border-left-width) solid var(--alert-info-border);
+}
+
+/* ========== 工具类 ========== */
+.text-accent    { color: var(--color-accent-hex); }
+.text-highlight { color: var(--color-secondary-dark); }
+.text-muted     { color: var(--color-text-muted); }
+
+.mt-xs { margin-top: var(--spacing-1); }
+.mt-sm { margin-top: var(--spacing-2); }
+.mt-md { margin-top: var(--spacing-4); }
+.mt-lg { margin-top: var(--spacing-6); }
+.mt-xl { margin-top: var(--spacing-8); }
+.mb-xs { margin-bottom: var(--spacing-1); }
+.mb-sm { margin-bottom: var(--spacing-2); }
+.mb-md { margin-bottom: var(--spacing-4); }
+.mb-lg { margin-bottom: var(--spacing-6); }
+.mb-xl { margin-bottom: var(--spacing-8); }
+.ml-sm { margin-left:   var(--spacing-2); }
+.mr-sm { margin-right:  var(--spacing-2); }
+.p-sm  { padding:       var(--spacing-2); }
+.p-md  { padding:       var(--spacing-4); }
+.p-lg  { padding:       var(--spacing-6); }
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: var(--flex-gap);
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--flex-gap);
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== 响应式基础 ========== */
+@media (max-width: 768px) {
+  :root {
+    --container-padding-x: 16px;
+    --container-padding-y: 16px;
+    --container-margin-y:  12px;
+  }
+  .frame__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+}
+
+/* ========== 主内容区 (左右留出边栏宽度) ========== */
+#main-content {
+  margin: 0 var(--sidebar-w);
+  min-height: 100vh;
+  transition: margin 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+/* ===========================================================
+   首页框架容器系统
+   规则① 框架定位后不轻易修改
+   规则② 横向随浏览器宽度自适应
+   规则③ 竖向不受浏览器缩放影响
+   规则④ 内容安全间距
+   规则⑤ 自适应换行
+   规则⑥ 嵌套保护
+   ========================================================== */
+
+/* 规则⑤ 大框架容器 — 自适应换行 */
+.shouye-frame-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sy-frame-gap);
+  width: 100%;
+  height: var(--sy-frame-height);
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.shouye-frame {
+  flex: 1 1 var(--sy-frame-min-width);
+  padding: var(--sy-frame-padding-y) var(--sy-frame-padding-x);
+  height: var(--sy-frame-height);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.shouye-frame--full {
+  flex: 0 0 100%;
+}
+
+/* 规则⑥ 小框架容器 */
+.shouye-subframe-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sy-frame-gap);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shouye-subframe {
+  flex: 1 1 240px;
+  padding: var(--spacing-4);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 规则① 框架身份标识 */
+.shouye-frame[data-frame],
+.shouye-subframe[data-frame] {
+  /* data-frame 标记框架身份，定好后不轻易修改 */
+}
+
+
+/* ===========================================================
+   交互扩展：框架可点击态（区域按钮）
+   规则：点击框架内任意位置即可触发，不限于文字
+   使用 章鱼哥蓝 为主色
+   ========================================================== */
+
+.shouye-frame--clickable,
+.shouye-subframe--clickable {
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.shouye-frame--clickable:hover,
+.shouye-subframe--clickable:hover {
+  background: var(--sy-primary-alpha-10);
+  box-shadow: 0 4px 14px var(--sy-primary-alpha-20);
+}
+
+.shouye-frame--clickable:active,
+.shouye-subframe--clickable:active {
+  background: var(--sy-primary-alpha-20);
+}
+
+/* 框架内文字按钮：由 <a> / <button> 原生标签提供交互 */
+.shouye-frame a,
+.shouye-frame button,
+.shouye-subframe a,
+.shouye-subframe button {
+  color: var(--sy-primary-dark);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.shouye-frame a:hover,
+.shouye-frame button:hover,
+.shouye-subframe a:hover,
+.shouye-subframe button:hover {
+  color: var(--sy-primary);
+}
+
+
+/* ===========================================================
+   规则④ 内容安全间距强制保护
+   ========================================================== */
+
+.shouye-frame > *:first-child,
+.shouye-subframe > *:first-child {
+  margin-top: 0;
+}
+
+.shouye-frame > *:last-child,
+.shouye-subframe > *:last-child {
+  margin-bottom: 0;
+}

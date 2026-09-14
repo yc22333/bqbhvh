@@ -1,0 +1,62 @@
+# ============================================================
+# card-refresh.yml — 每 2 小时自动刷新卡战备
+# 
+# 触发的API:
+#   ⚔️ 卡战备 (card_zhanbei, LV 0,1,2,3,5) — 10 Token/次
+#
+# 机制:
+#   通过 cache-manager (需管理员密码) 调用刷新
+#   密码存储在 GitHub Secrets 中 (ADMIN_KEY)
+# ============================================================
+name: 卡战备自动刷新 (每2小时)
+
+on:
+  schedule:
+    # 每 2 小时 (UTC)，北京时间 +8
+    - cron: '5 */2 * * *'
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  refresh-card:
+    name: ⚔️ 刷新卡战备方案
+    runs-on: ubuntu-latest
+    steps:
+      - name: 调用卡战备刷新接口
+        run: |
+          echo "🔄 刷新卡战备（5个档位）..."
+          echo "   北京时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          echo ""
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "https://${{ secrets.SITE_DOMAIN }}/.netlify/functions/cache-manager?admin_key=${{ secrets.ADMIN_KEY }}&action=refresh_single&endpoint=card_zhanbei")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "HTTP 状态码: $HTTP_CODE"
+          echo "响应内容: $BODY"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ 卡战备刷新失败"
+            echo "   尝试备用域名..."
+            
+            RESPONSE2=$(curl -s -w "\n%{http_code}" \
+              "https://biqibao.lol/.netlify/functions/cache-manager?admin_key=${{ secrets.ADMIN_KEY }}&action=refresh_single&endpoint=card_zhanbei")
+            HTTP_CODE2=$(echo "$RESPONSE2" | tail -1)
+            BODY2=$(echo "$RESPONSE2" | head -n -1)
+            
+            echo "备用域名 HTTP: $HTTP_CODE2 | 响应: $BODY2"
+            
+            if [ "$HTTP_CODE2" != "200" ]; then
+              exit 1
+            fi
+          fi
+
+      - name: 📊 打印消耗统计
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  ✅ 卡战备刷新完成"
+          echo "  📅 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          echo "  ⚔️ 卡战备方案 — 10 Token"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"

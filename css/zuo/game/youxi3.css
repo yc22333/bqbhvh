@@ -1,0 +1,565 @@
+﻿/* ============================================================
+   youxi3.css — 挂机点击游戏（游戏三）样式
+   功能: 放置点击类游戏视觉样式
+   风格: 参考 awm.css / huishou.css 主题配色
+   [CREATED: 2026-06-11] [SELF-CONTAINED]
+   ============================================================ */
+
+/* ── 游戏统计行 ── */
+.g3-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.g3-stat-box {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+  border: 1px solid rgba(91, 192, 222, 0.08);
+}
+
+.g3-stat-label {
+  font-size: clamp(0.7rem, 1.6vw, 0.82rem);
+  color: #8ab4c8;
+}
+
+.g3-stat-value {
+  font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+  font-weight: bold;
+  color: #F5D742;
+  text-shadow: 0 0 8px rgba(245, 215, 66, 0.2);
+}
+
+.g3-stat-value.g3-gold-value {
+  color: #ffd700;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+}
+
+/* ── 点击区域 ── */
+.g3-click-zone {
+  width: 100%;
+  height: 160px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  border: 2px dashed rgba(91, 192, 222, 0.12);
+  transition: all 0.15s;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.g3-click-zone:hover {
+  border-color: rgba(91, 192, 222, 0.35);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.g3-click-zone:active {
+  transform: scale(0.98);
+}
+
+.g3-click-icon {
+  font-size: clamp(3rem, 8vw, 5rem);
+  transition: transform 0.1s;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.g3-click-zone:active .g3-click-icon {
+  transform: scale(0.9);
+}
+
+/* ── Minecraft 稿子图片样式 ── */
+.g3-tool-pickaxe {
+  width: clamp(64px, 12vw, 96px);
+  height: clamp(64px, 12vw, 96px);
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+/* ── 商店稿子小图标 ── */
+.g3-shop-pickaxe {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  margin-right: 2px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.g3-click-zone:hover .g3-tool-pickaxe {
+  transform: scale(1.08);
+}
+
+.g3-click-zone:active .g3-tool-pickaxe {
+  transform: scale(0.92);
+}
+
+/* ── 点击飘字 ── */
+.g3-float-text {
+  position: absolute;
+  color: #ffd700;
+  font-weight: bold;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  pointer-events: none;
+  animation: g3FloatUp 0.8s ease-out forwards;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+}
+
+@keyframes g3FloatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
+}
+
+/* ── 升级商店 ── */
+.g3-shop-title {
+  color: #F5D742;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.g3-shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.g3-shop-item {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(91, 192, 222, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.g3-shop-item:hover {
+  background: rgba(91, 192, 222, 0.08);
+  border-color: rgba(91, 192, 222, 0.3);
+  transform: translateY(-2px);
+}
+
+.g3-shop-item:active {
+  transform: translateY(1px);
+}
+
+.g3-shop-item.can-afford {
+  border-color: rgba(82, 196, 26, 0.3);
+}
+
+.g3-shop-name {
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: #e8d48b;
+  font-weight: 600;
+}
+
+.g3-shop-lv {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #8ab4c8;
+}
+
+.g3-shop-cost {
+  font-size: clamp(0.82rem, 1.8vw, 0.92rem);
+  color: #FF6B9D;
+  margin-top: 2px;
+}
+
+.g3-shop-effect {
+  font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+  color: #52c41a;
+}
+
+/* ── 挂机提示 ── */
+.g3-idle-notice {
+  text-align: center;
+  color: #8ab4c8;
+  font-size: clamp(0.72rem, 1.6vw, 0.85rem);
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+/* ── 工具名称展示 ── */
+.g3-tool-name {
+  text-align: center;
+  color: #e8d48b;
+  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+  font-weight: 600;
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+/* ── 自动采矿开关行 ── */
+.g3-auto-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+.g3-auto-label {
+  color: #8ab4c8;
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  font-weight: 600;
+}
+
+.g3-auto-toggle {
+  padding: 4px 14px;
+  font-size: clamp(0.75rem, 1.6vw, 0.88rem);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.g3-auto-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.g3-auto-toggle:active {
+  transform: translateY(1px);
+}
+
+.g3-auto-on {
+  background: #52c41a;
+  color: #fff;
+}
+
+.g3-auto-on:hover {
+  background: #389e0d;
+}
+
+.g3-auto-off {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.g3-auto-off:hover {
+  background: #cf1322;
+}
+
+/* ── 控制区 ── */
+.g3-ctrl {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.g3-ctrl-btn {
+  padding: 6px 18px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.g3-ctrl-btn:hover { transform: translateY(-2px); }
+.g3-ctrl-btn:active { transform: translateY(1px); }
+
+.g3-btn-reset {
+  background: #FF6B9D;
+  color: #fff;
+}
+.g3-btn-reset:hover { background: #e85a8c; }
+
+.g3-btn-prestige {
+  background: linear-gradient(135deg, #722ed1, #b37feb);
+  color: #fff;
+}
+.g3-btn-prestige:hover {
+  background: linear-gradient(135deg, #5b1fa8, #9c6ade);
+}
+
+.g3-btn-leaderboard {
+  background: linear-gradient(135deg, #d48806, #f5b82e);
+  color: #fff;
+}
+.g3-btn-leaderboard:hover {
+  background: linear-gradient(135deg, #b07405, #d4a025);
+}
+
+/* ============================================================
+   💾 存档管理相关样式
+   ============================================================ */
+
+/* ── 存档状态信息行 ── */
+.g3-save-info {
+  text-align: center;
+  color: #8ab4c8;
+  font-size: clamp(0.7rem, 1.5vw, 0.82rem);
+  padding: 4px 0;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  border: 1px dashed rgba(91, 192, 222, 0.1);
+}
+
+/* ── 存档按钮栏 ── */
+.g3-save-bar {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.g3-save-btn {
+  padding: 4px 12px;
+  font-size: clamp(0.75rem, 1.6vw, 0.88rem);
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+  color: #5bc0de;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.g3-save-btn:hover {
+  background: rgba(91, 192, 222, 0.15);
+  border-color: rgba(91, 192, 222, 0.4);
+  transform: translateY(-1px);
+}
+
+.g3-save-btn:active {
+  transform: translateY(1px);
+}
+
+/* ── 离线收益 / 导出弹窗 ── */
+.g3-offline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: g3FadeIn 0.3s ease;
+}
+
+@keyframes g3FadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.g3-offline-box {
+  background: linear-gradient(135deg, rgba(10, 25, 41, 0.95), rgba(15, 35, 55, 0.95));
+  border: 2px solid rgba(91, 192, 222, 0.3);
+  border-radius: 14px;
+  padding: 24px 28px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 24px rgba(91, 192, 222, 0.15);
+  animation: g3PopIn 0.4s ease;
+}
+
+@keyframes g3PopIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.g3-offline-title {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: bold;
+  color: #F5D742;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(245, 215, 66, 0.3);
+}
+
+.g3-offline-time {
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: #8ab4c8;
+  margin-bottom: 12px;
+}
+
+.g3-offline-gain {
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  color: #e8d48b;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.g3-gain-num {
+  display: inline-block;
+  color: #ffd700;
+  font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  margin: 0 4px;
+}
+
+.g3-offline-close {
+  padding: 8px 24px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  background: linear-gradient(135deg, #52c41a, #73d13d);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 4px 6px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+}
+
+.g3-offline-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+}
+
+/* ── 导出存档文本框 ── */
+.g3-export-text {
+  width: 100%;
+  min-height: 100px;
+  max-height: 200px;
+  padding: 10px;
+  margin: 12px 0;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  border-radius: 8px;
+  color: #5bc0de;
+  font-size: clamp(0.7rem, 1.4vw, 0.82rem);
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+  outline: none;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.g3-export-text:focus {
+  border-color: rgba(91, 192, 222, 0.5);
+  box-shadow: 0 0 8px rgba(91, 192, 222, 0.15);
+}
+
+/* ── Toast 操作提示 ── */
+.g3-toast {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 600;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 1px solid rgba(91, 192, 222, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.g3-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.g3-btn-leaderboard {
+  background: linear-gradient(135deg, #d48806, #f5b82e);
+  color: #fff;
+}
+.g3-btn-leaderboard:hover {
+  background: linear-gradient(135deg, #b07405, #d4a025);
+}
+
+/* ========== 统计/成就面板 新增样式 ========== */
+
+/* 详细统计面板 */
+.g3-stats-detail {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.g3-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.g3-highlight {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* 成就面板 */
+.g3-achievement-panel {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.g3-ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* 锁定的成就 */
+.g3-shop-item.g3-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.g3-shop-item.g3-locked:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* 已穿戴的成就 */
+.g3-shop-item.g3-equipped {
+  border: 2px solid #ffd700;
+  background: rgba(255, 215, 0, 0.08);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
+.g3-shop-item.g3-equipped:hover {
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* 标题通用样式（已由现有 .g3-shop-title 提供，此处微调间距） */
+.g3-stats-detail .g3-shop-title,
+.g3-achievement-panel .g3-shop-title {
+  margin: 0 0 8px 0;
+}

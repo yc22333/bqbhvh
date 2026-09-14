@@ -1,0 +1,225 @@
+/* ============================================================
+   mima.css — 今日密码+地图区域
+   ============================================================ */
+
+/* 第二行：今日密码+地图 */
+.shouye-row-2 {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.maps-card {
+  width: 100%;
+}
+
+.maps-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(91, 192, 222, 0.3);
+}
+
+.maps-left {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.maps-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 24px;
+}
+
+/* 今日密码粉色 */
+.maps-title-pink {
+  color: #FF6B9D;
+}
+
+/* 标题图标不跟随放大 */
+.maps-icon {
+  font-size: 16px;
+  margin-left: -15px;
+}
+
+
+
+.maps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.map-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(91, 192, 222, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: inline-size;
+  /* 浮雕阴影 */
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.1);
+}
+
+.map-info-right {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 10;
+  pointer-events: none;
+  padding: 6px 0;
+}
+
+.map-name {
+  color: #FFD700;
+  font-size: clamp(12px, 5cqi, 16px);
+  font-weight: 700;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* 今日密码：密码使用正楷体 */
+.map-password {
+  color: #FF0000;
+  font-size: clamp(20px, 15cqi, 48px);
+  font-weight: 800;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  font-family: "FZSE-GBK", "楷体", "KaiTi", "STKaiti", serif !important;
+}
+
+.map-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  max-height: 200px;
+  border-radius: 6px;
+}
+
+.map-label {
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+}
+
+.map-price {
+  color: #F5D742;
+  font-weight: 600;
+}
+
+/* ═══ 撞车北京时间 ═══ */
+.shouye-row-1-5 {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.time-card {
+  width: 100%;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.time-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-title {
+  color: #F5D742;
+  font-size: 24px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 2px;
+}
+
+.time-icon {
+  font-size: 22px;
+}
+
+.time-title-text {
+  font-family: "楷体", "KaiTi", "STKaiti", serif;
+}
+
+/* 大号数字时钟 */
+.time-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 0 8px;
+  font-family: "Courier New", "Consolas", "微软雅黑", monospace;
+  letter-spacing: 2px;
+}
+
+.time-digits {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 800;
+  color: #5BC0DE;
+  text-shadow:
+    0 0 20px rgba(91, 192, 222, 0.4),
+    0 0 60px rgba(91, 192, 222, 0.15),
+    2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.time-millis {
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: 700;
+  color: rgba(91, 192, 222, 0.6);
+  text-shadow:
+    0 0 12px rgba(91, 192, 222, 0.2),
+    2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+}
+
+/* 极夜模式适配 */
+html[data-theme="night"] .time-title {
+  color: var(--nb-gold-bright) !important;
+}
+
+html[data-theme="night"] .time-digits {
+  color: #A78BFA !important;
+  text-shadow:
+    0 0 20px rgba(167, 139, 250, 0.4),
+    0 0 60px rgba(167, 139, 250, 0.15),
+    2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="night"] .time-millis {
+  color: rgba(167, 139, 250, 0.6) !important;
+  text-shadow:
+    0 0 12px rgba(167, 139, 250, 0.2),
+    2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+}

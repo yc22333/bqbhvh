@@ -1,0 +1,31 @@
+/* ============================================================
+   bei.css — 粒子背景层样式
+   功能: 定位 Canvas 为固定全屏背景，确保内容在其之上
+   [CREATED: 2026-06-07] [READ-ONLY AFTER FINALIZATION]
+   ============================================================ */
+
+/* ── 画布容器 ── */
+#bei-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;        /* 让鼠标事件穿透到上层内容 */
+  display: block;
+}
+
+/* ── 确保所有内容层在粒子之上（展开按钮除外） ── */
+body > :not(#bei-canvas):not(#zuo-panel):not(#you-panel):not(.zuo-hamburger):not(.you-expand-btn) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 右侧栏展开按钮：脱离粒子约束层，在最高层独立交互 ── */
+body > .you-expand-btn {
+  z-index: 999999 !important;
+}
+
+/* ── 滤色层已移除 — 颜色由 body 背景直接控制 ── */
+/*   白昼: body 正常背景色 (base.css); 极夜: riye.css 覆盖   */

@@ -1,0 +1,56 @@
+# ====== IDE / 编辑器 ======
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ====== Python 虚拟环境 ======
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ====== Python 本地脚本文件 ======
+main.py
+
+# ====== PHP 运行环境 ======
+php/
+
+# ====== 本地测试文件 ======
+php终端测试.txt
+test_curl.php
+proxy.php
+
+# ====== 本地一键上传脚本 ======
+一键上传gthup.bat
+一键上传GitHub.bat
+*.bat
+
+# ====== 项目结构备份 ======
+项目结构.txt
+
+# ====== 系统文件 ======
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ====== 环境变量（敏感密钥） ======
+.env
+.env.local
+.env.*.local
+
+# ====== Netlify 本地开发配置 ======
+.netlify
+
+# ====== 日志文件 ======
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ====== Node.js 依赖（如需要） ======
+# node_modules/

@@ -1,0 +1,496 @@
+/* ============================================================
+   paihangbang.css — 牢区小游戏 · 实时排行榜样式
+   功能: 排行榜面板、排名列表、提交记录等视觉样式
+   风格: 参考 youxi1.css / youxi2.css / youxi3.css 主题配色
+   [CREATED: 2026-06-11]
+   ============================================================ */
+
+/* ── 排行榜容器 ── */
+.g4-ranking-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── 玩家名称行 ── */
+.g4-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(91, 192, 222, 0.08);
+  flex-shrink: 0;
+}
+
+.g4-name-label {
+  color: #8ab4c8;
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  white-space: nowrap;
+}
+
+.g4-name-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  border-radius: 6px;
+  color: #e8d48b;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.25s;
+}
+
+.g4-name-input:focus {
+  border-color: #5BC0DE;
+}
+
+.g4-name-input::placeholder {
+  color: #6b7a8d;
+}
+
+/* ── 游戏选择标签行 ── */
+.g4-game-tabs {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.g4-game-tab {
+  flex: 1;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(91, 192, 222, 0.1);
+  border-radius: 6px;
+  color: #d4c07a;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  line-height: 1.3;
+}
+
+.g4-game-tab:hover {
+  background: rgba(91, 192, 222, 0.1);
+  border-color: rgba(91, 192, 222, 0.3);
+  transform: translateY(-1px);
+}
+
+.g4-game-tab.active {
+  background: rgba(245, 215, 66, 0.12);
+  border-color: #F5D742;
+  color: #F5D742;
+  text-shadow: 0 0 6px rgba(245, 215, 66, 0.2);
+}
+
+/* ── 排行榜列表容器 ── */
+.g4-rank-list-wrap {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(91, 192, 222, 0.06);
+  overflow-y: auto;
+  min-height: 0;
+  padding: 4px;
+}
+
+/* ── 空状态 ── */
+.g4-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 150px;
+  color: #6b7a8d;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  gap: 8px;
+}
+
+.g4-empty-icon {
+  font-size: clamp(2rem, 5vw, 3rem);
+  opacity: 0.5;
+}
+
+/* ── 单条排名 ── */
+.g4-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.g4-rank-item:last-child {
+  margin-bottom: 0;
+}
+
+.g4-rank-item:hover {
+  background: rgba(91, 192, 222, 0.06);
+}
+
+/* 排名前三特殊样式 */
+.g4-rank-item.top-1 {
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.g4-rank-item.top-2 {
+  background: rgba(192, 192, 192, 0.06);
+  border: 1px solid rgba(192, 192, 192, 0.15);
+}
+
+.g4-rank-item.top-3 {
+  background: rgba(205, 127, 50, 0.06);
+  border: 1px solid rgba(205, 127, 50, 0.15);
+}
+
+/* ── 排名序号 ── */
+.g4-rank-num {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  font-weight: 700;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+  color: #8ab4c8;
+}
+
+.g4-rank-item.top-1 .g4-rank-num {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+}
+
+.g4-rank-item.top-2 .g4-rank-num {
+  background: rgba(192, 192, 192, 0.15);
+  color: #c0c0c0;
+}
+
+.g4-rank-item.top-3 .g4-rank-num {
+  background: rgba(205, 127, 50, 0.15);
+  color: #cd7f32;
+}
+
+/* ── 排名信息 ── */
+.g4-rank-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.g4-rank-name {
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+  color: #e8d48b;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.g4-rank-detail {
+  font-size: clamp(0.68rem, 1.4vw, 0.78rem);
+  color: #8ab4c8;
+  margin-top: 1px;
+}
+
+/* ── 排名分数 ── */
+.g4-rank-score {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  font-weight: 700;
+  color: #F5D742;
+  text-shadow: 0 0 6px rgba(245, 215, 66, 0.15);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.g4-rank-item.top-1 .g4-rank-score {
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* ── 顶部操作栏 ── */
+.g4-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.g4-action-btn {
+  padding: 6px 16px;
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.g4-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.g4-action-btn:active {
+  transform: translateY(1px);
+}
+
+.g4-btn-clear {
+  background: rgba(255, 107, 157, 0.15);
+  color: #FF6B9D;
+  border: 1px solid rgba(255, 107, 157, 0.2);
+}
+
+.g4-btn-clear:hover {
+  background: rgba(255, 107, 157, 0.25);
+}
+
+/* ── 提交成功提示 ── */
+.g4-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.85);
+  color: #F5D742;
+  padding: 16px 28px;
+  border-radius: 12px;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  border: 1px solid rgba(245, 215, 66, 0.3);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s ease;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.g4-toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ═══════════════════════════════════════════
+   嵌入式排行榜（每个游戏面板底部）
+   使用 g1-lb- 前缀避免与独立面板冲突
+   ═══════════════════════════════════════════ */
+
+/* ── 排行榜嵌入容器 ── */
+.g1-lb-section {
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(91, 192, 222, 0.06);
+}
+
+/* ── 排行榜标题 ── */
+.g1-lb-header {
+  color: #F5D742;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ── 存储模式指示器 ── */
+.g1-lb-mode {
+  font-size: clamp(0.65rem, 1.3vw, 0.75rem);
+  color: #8ab4c8;
+  font-weight: normal;
+  padding: 2px 8px;
+  background: rgba(91, 192, 222, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(91, 192, 222, 0.2);
+  white-space: nowrap;
+  margin-left: 8px;
+  text-align: center;
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px rgba(245, 215, 66, 0.15);
+}
+
+/* ── 排行榜内的玩家名称行 ── */
+.g1-lb-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.g1-lb-name-label {
+  color: #8ab4c8;
+  font-size: clamp(0.72rem, 1.5vw, 0.85rem);
+  white-space: nowrap;
+}
+
+.g1-lb-name-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  border-radius: 4px;
+  color: #e8d48b;
+  font-size: clamp(0.78rem, 1.6vw, 0.9rem);
+  padding: 4px 8px;
+  outline: none;
+  transition: border-color 0.25s;
+  min-width: 0;
+}
+
+.g1-lb-name-input:focus {
+  border-color: #5BC0DE;
+}
+
+/* ── 排行榜列表容器（嵌入式） ── */
+.g1-lb-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.g1-lb-list .g4-rank-item {
+  padding: 5px 8px;
+  margin-bottom: 3px;
+}
+
+.g1-lb-list .g4-rank-num {
+  width: 22px;
+  height: 22px;
+  font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+}
+
+.g1-lb-list .g4-rank-name {
+  font-size: clamp(0.78rem, 1.6vw, 0.88rem);
+}
+
+.g1-lb-list .g4-rank-detail {
+  font-size: clamp(0.62rem, 1.2vw, 0.72rem);
+}
+
+.g1-lb-list .g4-rank-score {
+  font-size: clamp(0.8rem, 1.7vw, 0.95rem);
+}
+
+.g1-lb-list .g4-empty {
+  min-height: 60px;
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+}
+
+.g1-lb-list .g4-empty-icon {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+/* ═══════════════════════════════════════════
+   嵌入式排行榜（每个游戏面板底部）
+   使用 g1-lb- 前缀避免与独立面板冲突
+   ═══════════════════════════════════════════ */
+
+/* ── 排行榜嵌入容器 ── */
+.g1-lb-section {
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(91, 192, 222, 0.06);
+}
+
+/* ── 排行榜标题 ── */
+.g1-lb-header {
+  color: #F5D742;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px rgba(245, 215, 66, 0.15);
+}
+
+/* ── 排行榜内的玩家名称行 ── */
+.g1-lb-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.g1-lb-name-label {
+  color: #8ab4c8;
+  font-size: clamp(0.72rem, 1.5vw, 0.85rem);
+  white-space: nowrap;
+}
+
+.g1-lb-name-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(91, 192, 222, 0.15);
+  border-radius: 4px;
+  color: #e8d48b;
+  font-size: clamp(0.78rem, 1.6vw, 0.9rem);
+  padding: 4px 8px;
+  outline: none;
+  transition: border-color 0.25s;
+  min-width: 0;
+}
+
+.g1-lb-name-input:focus {
+  border-color: #5BC0DE;
+}
+
+/* ── 排行榜列表容器（嵌入式） ── */
+.g1-lb-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.g1-lb-list .g4-rank-item {
+  padding: 5px 8px;
+  margin-bottom: 3px;
+}
+
+.g1-lb-list .g4-rank-num {
+  width: 22px;
+  height: 22px;
+  font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+}
+
+.g1-lb-list .g4-rank-name {
+  font-size: clamp(0.78rem, 1.6vw, 0.88rem);
+}
+
+.g1-lb-list .g4-rank-detail {
+  font-size: clamp(0.62rem, 1.2vw, 0.72rem);
+}
+
+.g1-lb-list .g4-rank-score {
+  font-size: clamp(0.8rem, 1.7vw, 0.95rem);
+}
+
+.g1-lb-list .g4-empty {
+  min-height: 60px;
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+}
+
+.g1-lb-list .g4-empty-icon {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+}

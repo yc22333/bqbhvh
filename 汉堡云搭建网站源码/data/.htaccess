@@ -1,0 +1,18 @@
+# 数据库目录 - 禁止外部访问
+<RequireAll>
+    Require all denied
+</RequireAll>
+
+# 兼容 Apache 2.2
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
+# 禁用目录列表
+Options -Indexes -ExecCGI -FollowSymLinks
+
+# 禁止所有文件被读取
+<FilesMatch "\.(sqlite|db|htaccess)$">
+    Require all denied
+</FilesMatch>
