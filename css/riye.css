@@ -588,3 +588,10 @@ html[data-theme="night"] .leida-notice-text {
 html[data-theme="night"] .leida-notice-price {
   color: var(--nb-gold-bright) !important;
 }
+html[data-theme="night"] .leida-disclaimer {
+  background: rgba(231, 76, 60, 0.06) !important;
+  border-color: rgba(231, 76, 60, 0.12) !important;
+}
+html[data-theme="night"] .leida-disclaimer-line {
+  color: var(--nb-text-muted) !important;
+}

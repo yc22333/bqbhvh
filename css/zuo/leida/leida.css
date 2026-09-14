@@ -214,6 +214,27 @@
   color: #f5b82e;
 }
 
+/* ── 免责声明 ── */
+.leida-disclaimer {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.12);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.leida-disclaimer-line {
+  font-size: 13px;
+  color: rgba(232, 213, 163, 0.55);
+  line-height: 1.7;
+}
+
+.leida-disclaimer-line + .leida-disclaimer-line {
+  margin-top: 4px;
+}
+
 /* ── 响应式适配 ── */
 @media (max-width: 600px) {
   .leida-card {

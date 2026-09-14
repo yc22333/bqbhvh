@@ -64,6 +64,10 @@ const Leida = (() => {
       noticeHtml +
       '<div class="leida-server-list">' +
         cardsHtml +
+      '</div>' +
+      '<div class="leida-disclaimer">' +
+        '<div class="leida-disclaimer-line">重瞳已是无敌路，是挂三分毒，封号只是迟早的，小号娱乐即可，切勿使用大号</div>' +
+        '<div class="leida-disclaimer-line">只提供激活码提供使用，一切后果自行承担</div>' +
       '</div>';
 
     container.innerHTML = html;
