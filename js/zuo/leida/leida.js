@@ -40,6 +40,13 @@ const Leida = (() => {
 
   /* ── 构建 UI（只执行一次） ── */
   function buildUI(container) {
+    var noticeHtml =
+      '<div class="leida-notice">' +
+        '<div class="leida-notice-title">💡 购买激活码</div>' +
+        '<div class="leida-notice-text">联系群主 <strong>章鱼哥</strong> 购买激活码</div>' +
+        '<div class="leida-notice-price">60 / 天 &nbsp;|&nbsp; 380 / 周</div>' +
+      '</div>';
+
     var cardsHtml = '';
     SERVERS.forEach(function (svr) {
       cardsHtml +=
@@ -48,17 +55,16 @@ const Leida = (() => {
           '<div class="leida-card-info">' +
             '<div class="leida-card-name">' + svr.name + '</div>' +
             '<div class="leida-card-desc">' + svr.desc + '</div>' +
-            '<div class="leida-card-url">' + svr.url + '</div>' +
           '</div>' +
           '<div class="leida-card-arrow">➝</div>' +
         '</a>';
     });
 
     var html =
+      noticeHtml +
       '<div class="leida-server-list">' +
         cardsHtml +
-      '</div>' +
-      '<div class="leida-tip">点击上方卡片直接访问服务器 · 将在当前页面打开</div>';
+      '</div>';
 
     container.innerHTML = html;
   }

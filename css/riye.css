@@ -569,15 +569,22 @@ html[data-theme="night"] .leida-card-name {
 html[data-theme="night"] .leida-card-desc {
   color: var(--nb-text-dim) !important;
 }
-html[data-theme="night"] .leida-card-url {
-  color: var(--nb-text-muted) !important;
-}
 html[data-theme="night"] .leida-card-arrow {
   color: var(--nb-text-muted) !important;
 }
 html[data-theme="night"] .leida-card:hover .leida-card-arrow {
   color: var(--nb-gold-bright) !important;
 }
-html[data-theme="night"] .leida-tip {
-  color: var(--nb-text-muted) !important;
+html[data-theme="night"] .leida-notice {
+  background: rgba(167, 139, 250, 0.06) !important;
+  border-color: rgba(167, 139, 250, 0.15) !important;
+}
+html[data-theme="night"] .leida-notice-title {
+  color: var(--nb-gold-bright) !important;
+}
+html[data-theme="night"] .leida-notice-text {
+  color: var(--nb-text-dim) !important;
+}
+html[data-theme="night"] .leida-notice-price {
+  color: var(--nb-gold-bright) !important;
 }
